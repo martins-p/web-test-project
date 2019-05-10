@@ -1,0 +1,15 @@
+#product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product-card {
+    width: 160px;
+    max-height: 160px;
+    margin: 20px;
+    padding: 10px;
+    border: 2pt solid black;
+    text-align: center;
+    overflow: hidden;
+}
