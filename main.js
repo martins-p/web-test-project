@@ -9,6 +9,8 @@ $("#save-button").click(function join_size_values () {
     $("#furniture-size").val(height + "x" + width + "x" + length);
 });
 
+
+
 $("#select-product-type").select(function(){
     var selection = $("#select-product-type option:selected").text();
     $("#" + selection + "container").show();
