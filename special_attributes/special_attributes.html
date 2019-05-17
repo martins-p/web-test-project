@@ -8,18 +8,27 @@
 </head>
 <body>
     <div id="dimensions-container">
-        Height <input type="number" id="furniture-height"> cm<br>
-        Width <input type="number" id="furniture-width"> cm<br>
-        Length <input type="number" id="furniture-length"> cm<br>
+        <table><tr>
+            <td>Height</td>
+            <td><input type="number" id="furniture-height"> cm</td>
+        </tr>
+        <tr>
+            <td>Width</td>
+            <td><input type="number" id="furniture-width"> cm</td>
+        </tr>
+        <tr>
+            <td>Length</td>
+            <td><input type="number" id="furniture-length"> cm</td>
+        </tr></table>
         <input type="hidden" id="furniture-size" name="value">
-        <p>Info about Weight.</p>
+        <p>Info about dimensions.</p>
     </div>
     <div id="size-container">
         Size <input type="text" name="value"><br>
         <p>Info about size.</p>
     </div>
     <div id="weight-container">
-        Size <input type="text" name="value"><br>
+        Weight <input type="text" name="value"><br>
         <p>Info about weight.</p>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
