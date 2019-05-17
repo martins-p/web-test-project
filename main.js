@@ -1,4 +1,4 @@
-$("#selected-product-type").change(function() {
+$("#select-product-type").change(function() {
     $("#hide-test").hide();
 });
 
@@ -11,7 +11,13 @@ $("#save-button").click(function join_size_values () {
 
 
 
-$("#select-product-type").select(function(){
-    var selection = $("#select-product-type option:selected").text();
-    $("#" + selection + "container").show();
+$("#select-product-type").change(function(){
+    var selection = $("#select-product-type option:selected").text().toLowerCase().trimStart();
+    $("#special-attribute-field").load("special_attributes/special_attributes.html #" + specialAttributeFields[selection]);
 });
+
+var specialAttributeFields = {
+    "dvd-disc" : "dimensions-container",
+    "furniture" : "size-container",
+    "book" : "weight-container"
+};
