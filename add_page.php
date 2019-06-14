@@ -1,4 +1,4 @@
-<?php include ('select.php') ?>
+<?php include ('includes/viewproduct.php') ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,7 @@
 </head>
 <body>
     <div><h2>Product Add</h2></div>
-    <form action="" method="post" id="new-product-form"><table>
+    <form action="inputvalidation.php" method="POST" id="new-product-form"><table>
         <tr>
             <td>SKU</td>
             <td><input type="text" name="SKU"></td>
@@ -27,9 +27,11 @@
         <tr>
             <td>Type</td>
             <td><select name="type" id="select-product-type">
-                    <?php while($row = $attributeObject->fetch_assoc()): ?>
+                    <?php
+                    $productTypes = new ViewProduct(); 
+                    foreach($productTypes->showAllProdTypes() as $row): ?>
                         <option> <?=$row["type"]?></option>
-                    <?php endWhile; ?>
+                    <?php endforeach; ?>
                 </select>
             </td>
         </tr>
@@ -38,9 +40,9 @@
         <div id="special-attribute-field">
                         
         </div>
+        <button type="submit"  id="save-button">Save</button>
     </form>
-    <button type="submit" form="new-product-form" id="save-button">Save</button>
-    <p id="hide-test">TEST</p>
+    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="main.js"></script>
 </body>

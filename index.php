@@ -1,5 +1,5 @@
 
-<?php include ('select.php') ?>
+<?php include 'includes/viewproduct.php' ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,9 +15,12 @@
     <div>
         <h2>Product List</h2>
     </div>
+    
     <h3><a href="add_page.php">Add Product</a></h3>
     <div id="product-grid">
-        <?php while($row = $productObject->fetch_assoc()): ?>
+        <?php 
+        $viewProducts = new ViewProduct();
+        foreach($viewProducts->showAllProducts() as $row): ?>
 
             <div class="product-card">
                 <h3><?=$row['name']?></h3>
@@ -28,7 +31,7 @@
                     <p class="product-attribute"><?=$row['attribute']?>: <?=$row['value']?></p>
                 <?php endif; ?>
             </div>
-        <?php endWhile; ?>
+        <?php endforeach; ?>
     </div>
     
     

@@ -9,7 +9,6 @@ $("#save-button").click(function join_size_values () {
 
 $("#select-product-type").change(function(){
     var selection = $("#select-product-type option:selected").text().toLowerCase().trimStart();
-    console.log(specialAttributeFields[selection]);
     $("#special-attribute-field").load("special_attributes/special_attributes.html #" + specialAttributeFields[selection]);
 });
 
