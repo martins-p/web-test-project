@@ -24,8 +24,8 @@
 
             <div class="product-card">
                 <h3><?=$row['name']?></h3>
-                <p><?=$row['SKU']?></p>
-                <p><?=$row['price']?></p>
+                <p><?=$row['sku']?></p>
+                <p>Price:<?=$row['price']?>$</p>
                 <?php 
                  if ($row['value'] !== null): ?>
                     <p class="product-attribute"><?=$row['attribute']?>: <?=$row['value']?></p>

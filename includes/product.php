@@ -1,5 +1,6 @@
 <?php 
 include 'dbc.php';
+include 'validation.php';
 //This class handles connections to database
 
 class Product extends Dbc {
@@ -8,24 +9,15 @@ class Product extends Dbc {
     public $name;
     public $price;
     public $type;
-    public $special_attribute;
-    public $special_attribute_value;
+    public $special_attribute = "";
+    public $special_attribute_value = null;
 
 
     
 
     protected function getAllProducts() {
-        // $query = "SELECT id, products.SKU, name, price, attribute, value FROM products LEFT JOIN attributes ON products.SKU = attributes.SKU";
-        // $result = $this->connect()->query($query);
-        // $numRows = $result->num_rows;
-        // if ($numRows > 0) {
-        //     while ($row = $result->fetch_assoc()) {
-        //         $data[] = $row;
-        //     }
-        //     return $data;
-        // }
 
-        $stmt = $this->connect()->query("SELECT id, products.SKU, name, price, attribute, value FROM products LEFT JOIN attributes ON products.SKU = attributes.SKU");
+        $stmt = $this->connect()->query("SELECT id, products.sku, name, price, attribute, value FROM products LEFT JOIN attributes ON products.sku = attributes.sku");
         $output = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $output[] = $row;
@@ -45,18 +37,50 @@ class Product extends Dbc {
         return($output);
     }
 
-    protected function addProduct ($sku, $name, $price, $type, $attributeName, $attributeValue) {
+    function addProduct () {
+        $pdo = $this->connect();
+        $stmt_product= $pdo->prepare("INSERT INTO products (sku, name, price, type) VALUES (:sku,:name,:price,:type)");
+        $stmt_attribute= $pdo->prepare("INSERT INTO attributes (sku, attribute, value) VALUES (:sku, :attribute, :value)");
+        
+        $this->sku = $this->validate($this->sku);
+        $this->name = $this->validate($this->name);
+        $this->price = $this->validate($this->price);
+        $this->type = $this->validate($this->type);
+        $this->special_attribute = $this->validate($this->special_attribute);
+        $this->special_attribute_value = $this->validate($this->special_attribute_value);
 
+        try {
+            $pdo->beginTransaction();
 
+            $stmt_product->bindParam('sku', $this->sku);
+            $stmt_product->bindParam('name', $this->name);
+            $stmt_product->bindParam('price', $this->price);
+            $stmt_product->bindParam('type', $this->type);
+
+            $stmt_attribute->bindParam('sku', $this->sku);
+            $stmt_attribute->bindParam('attribute', $this->special_attribute);
+            $stmt_attribute->bindParam('value', $this->special_attribute_value);
+            
+            $stmt_product->execute();
+            $stmt_attribute->execute();
+
+            $pdo->commit();
+        }
+        catch (Exception $error) {
+            $pdo->rollback();
+            echo "Error: ".$error->getMessage();
+        }
 
     }
+
+    function validate($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
 }
 
-// $query = "SELECT id, products.SKU, name, price, attribute, value FROM products LEFT JOIN attributes ON products.SKU = attributes.SKU";
-// $productObject = $connection->query($query);
-
-
-// $queryAttributes = "SELECT DISTINCT type FROM products";
-// $attributeObject = $connection->query($queryAttributes);
 
 

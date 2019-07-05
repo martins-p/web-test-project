@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="dimensions-container">
+            <input type="hidden" name="special_attribute" value="Dimensions">
         <table><tr>
             <td>Height</td>
             <td><input type="number" id="furniture-height"> cm</td>
@@ -20,15 +21,17 @@
             <td>Length</td>
             <td><input type="number" id="furniture-length"> cm</td>
         </tr></table>
-        <input type="hidden" id="furniture-size" name="value">
+        <input type="hidden" id="furniture-size" name="special_attribute_value">
         <p>Info about dimensions.</p>
     </div>
     <div id="size-container">
-        Size <input type="text" name="value"><br>
+            <input type="hidden" name="special_attribute" value="Size">
+        Size <input type="text" name="special_attribute_value"><br>
         <p>Info about size.</p>
     </div>
     <div id="weight-container">
-        Weight <input type="text" name="value"><br>
+            <input type="hidden" name="special_attribute" value="Weight">
+        Weight <input type="text" name="special_attribute_value"><br>
         <p>Info about weight.</p>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>

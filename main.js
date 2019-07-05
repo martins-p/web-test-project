@@ -1,7 +1,7 @@
 $("#save-button").click(function join_size_values () {
-    var height = $("#furniture height").val();
-    var width = $("#furniture width").val();
-    var length = $("#furniture length").val();
+    var height = $("#furniture-height").val();
+    var width = $("#furniture-width").val();
+    var length = $("#furniture-length").val();
     $("#furniture-size").val(height + "x" + width + "x" + length);
 });
 
@@ -17,3 +17,4 @@ var specialAttributeFields = {
     "dvd-disc" : "size-container",
     book : "weight-container",
 };
+
