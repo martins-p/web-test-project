@@ -18,3 +18,24 @@ var specialAttributeFields = {
     book : "weight-container",
 };
 
+// $(".product-checkbox").change(function(){
+//     console.log("Checked");
+//     if ($(this).prop("checked")) {
+//         $("#delete-button").show();
+//     } else {
+//         $("#delete-button").hide();
+//     }
+// });
+
+
+function checkCheckedBoxes(form) {
+        if ($("#" + form + " input[type=checkbox]:checked").length > 0) {
+            $("#delete-button").css("display", "block");
+        } else {
+            $("#delete-button").css("display", "none");
+        };
+}
+
+$(".product-checkbox").on("click", function() {
+    checkCheckedBoxes("mass-delete")
+});

@@ -11,27 +11,27 @@
             <input type="hidden" name="special_attribute" value="Dimensions">
         <table><tr>
             <td>Height</td>
-            <td><input type="number" id="furniture-height"> cm</td>
+            <td><input type="number" id="furniture-height" required> cm</td>
         </tr>
         <tr>
             <td>Width</td>
-            <td><input type="number" id="furniture-width"> cm</td>
+            <td><input type="number" id="furniture-width" required> cm</td>
         </tr>
         <tr>
             <td>Length</td>
-            <td><input type="number" id="furniture-length"> cm</td>
+            <td><input type="number" id="furniture-length" required> cm</td>
         </tr></table>
         <input type="hidden" id="furniture-size" name="special_attribute_value">
         <p>Info about dimensions.</p>
     </div>
     <div id="size-container">
-            <input type="hidden" name="special_attribute" value="Size">
-        Size <input type="text" name="special_attribute_value"><br>
+            <input type="hidden" name="special_attribute" value="Size" >
+        Size <input type="text" name="special_attribute_value" required><br>
         <p>Info about size.</p>
     </div>
     <div id="weight-container">
             <input type="hidden" name="special_attribute" value="Weight">
-        Weight <input type="text" name="special_attribute_value"><br>
+        Weight <input type="text" name="special_attribute_value" required><br>
         <p>Info about weight.</p>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>

@@ -1,5 +1,6 @@
 
-<?php include 'includes/viewproduct.php' ?>
+<?php include_once 'includes/viewproduct.php';
+    include_once 'includes/product.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,31 +10,56 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Junior developer test</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
 </head>
 <body>
-    <div>
+    <div class="header">
+        
         <h2>Product List</h2>
+        <span><h3><a href="add_page.php">Add Product</a></h3></span>
+        <div class="header-right">
+            <button type="submit"  form="mass-delete" id="delete-button">Delete</button>
+        </div>
     </div>
     
-    <h3><a href="add_page.php">Add Product</a></h3>
+    
+    
+    <form id="mass-delete" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <div id="product-grid">
+        
         <?php 
         $viewProducts = new ViewProduct();
         foreach($viewProducts->showAllProducts() as $row): ?>
-
             <div class="product-card">
-                <h3><?=$row['name']?></h3>
+                <input type="checkbox" class="product-checkbox" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
                 <p><?=$row['sku']?></p>
-                <p>Price:<?=$row['price']?>$</p>
+                <h3><?=$row['name']?></h3>
+                
+                <p>Price: <?=$row['price']?>$</p>
                 <?php 
                  if ($row['value'] !== null): ?>
                     <p class="product-attribute"><?=$row['attribute']?>: <?=$row['value']?></p>
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
-    </div>
+        </div>
+        
+        </form>
+        
     
+    <?php
+        if($_POST){
+ 
+    $product = new Product();
+
+    $product->deleteProduct();
+}
+?>
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRi
 </body>
 </html>

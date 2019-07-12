@@ -15,19 +15,19 @@
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" id="new-product-form"><table>
         <tr>
             <td>SKU</td>
-            <td><input type="text" name="SKU"></td>
+            <td><input type="text" name="SKU" required></td>
         </tr>
         <tr>
             <td>Name</td>
-            <td><input type="text" name="name"></td>
+            <td><input type="text" name="name" required></td>
         </tr>
         <tr>
             <td>Price</td>
-            <td><input type="text" name="price"></td>
+            <td><input type="text" name="price" required></td>
         </tr>
         <tr>
             <td>Type</td>
-            <td><select name="type" id="select-product-type">
+            <td><select name="type" id="select-product-type" required>
                     <option selected disabled hidden style='display: none' value=''></option>
                     <?php
                     $productTypes = new ViewProduct(); 
@@ -43,8 +43,10 @@
         <div id="special-attribute-field">
                         
         </div>
-        <button type="submit"  id="save-button">Save</button>
+        
     </form>
+
+    <button type="submit" form="new-product-form" id="save-button">Save</button>
 <?php
 if($_POST){
  
