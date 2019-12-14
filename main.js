@@ -6,11 +6,28 @@ $("#save-button").click(function join_size_values () {
 });
 
 
-
-$("#select-product-type").change(function(){
+//Dropdown function
+/*$("#select-product-type").change(function(){
     var selection = $("#select-product-type option:selected").text().toLowerCase().trimStart();
     $("#special-attribute-field").load("special_attributes/special_attributes.html #" + specialAttributeFields[selection]);
+});*/
+$("#select-product-type").change(function(){
+    var selection = $("#select-product-type option:selected").text().toLowerCase().trimStart();
+    switch (selection) {
+        case 'dvd-disc':
+            $("#special-attribute-field").html(specialAtbSize);
+            break;
+        case 'book':
+            $("#special-attribute-field").html(specialAtbWeight);
+            break;
+        case 'furniture':
+            $("#special-attribute-field").html(specialAtbDimensions);
+            break;
+        default:
+            $("#special-attribute-field").html('');
+    }
 });
+
 
 var specialAttributeFields = {
     furniture : "dimensions-container",
@@ -39,3 +56,10 @@ function checkCheckedBoxes(form) {
 $(".product-checkbox").on("click", function() {
     checkCheckedBoxes("mass-delete")
 });
+
+var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"> Size <input type="text" name="special_attribute_value" required><br> <p>Info about size.</p>';
+
+var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"> Weight <input type="text" name="special_attribute_value" required><br> <p>Info about weight.</p>';
+
+var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions"> <table><tr> <td>Height</td> <td><input type="number" id="furniture-height" required> cm</td> </tr> <tr> <td>Width</td><td><input type="number" id="furniture-width" required> cm</td> </tr> <tr> <td>Length</td> <td><input type="number" id="furniture-length" required> cm</td> </tr></table> <input type="hidden" id="furniture-size" name="special_attribute_value"> <p>Info about dimensions.</p>';
+
