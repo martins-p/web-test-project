@@ -17,7 +17,7 @@ class Product extends Dbc {
 
     protected function getAllProducts() {
 
-        $stmt = $this->connect()->query("SELECT id, products.sku, name, price, attribute, value FROM products LEFT JOIN attributes ON products.sku = attributes.sku");
+        $stmt = $this->connect()->query("SELECT products.id, products.sku, name, price, attribute, value FROM products LEFT JOIN attributes ON products.sku = attributes.sku");
         $output = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $output[] = $row;
@@ -29,7 +29,7 @@ class Product extends Dbc {
 
     protected function getAllProdTypes (){
 
-        $stmt = $this->connect()->query("SELECT DISTINCT type FROM products");
+        $stmt = $this->connect()->query("SELECT type FROM product_types");
         $output = array();
         while ($row = $stmt->fetch()) {
             $output[] = $row;

@@ -1,16 +1,11 @@
 
 .header {
-    margin: 20px 5% 40px 5%; 
-    max-height: 80px;
+    margin: 20px 5% 40px 5%;
+    max-height: 100px;
     margin-bottom: 10px;
-}
-
-.product-checkbox {
-    float: left;
-}
-
-.header-right {
-    float: right;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+    overflow: hidden;
 }
 
 #product-grid {
@@ -18,7 +13,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    border-top: 2px solid black;
 }
 
 .product-card {
@@ -31,19 +25,23 @@
 }
 
 .product-card h3 {
-
     font-size: 14pt;
 }
 
-#special-attribute-field {
-    height: 150px;
-    
+.product-checkbox {
+    float: left;
 }
 
-#delete-button {
-    
+.delete-button {
     float: right;
-   margin-top: 30px;
     display: none;
 }
 
+.content-wrapper {
+    margin-left: 5%;
+}
+
+.standard-table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}

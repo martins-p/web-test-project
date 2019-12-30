@@ -9,33 +9,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Junior developer test</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
     <div class="header">
-        
-        <h2>Product List</h2>
-        <span><h3><a href="add_page.php">Add Product</a></h3></span>
-        <div class="header-right">
-            <button type="submit"  form="mass-delete" id="delete-button">Delete</button>
+        <div class="row title">
+            <div class="col">
+                <h2>Product List</h2>
+</div>
         </div>
-    </div>
-    
+        <div class="row">
+            <div class="col">
+                <h3><a href="add_page.php">Add Product</a></h3>
+            </div>
+            <div class="col">
+                <button type="submit"  form="mass-delete" class="delete-button btn btn-warning">Delete</button>
+            </div>
+        </div>
+    </div>    
     
     
     <form id="mass-delete" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <div id="product-grid">
-        
         <?php 
         $viewProducts = new ViewProduct();
         foreach($viewProducts->showAllProducts() as $row): ?>
             <div class="product-card">
-                <input type="checkbox" class="product-checkbox" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
+                <input type="checkbox" class="product-checkbox" autocomplete="off" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
                 <p><?=$row['sku']?></p>
                 <h3><?=$row['name']?></h3>
-                
                 <p>Price: <?=$row['price']?>$</p>
                 <?php 
                  if ($row['value'] !== null): ?>
