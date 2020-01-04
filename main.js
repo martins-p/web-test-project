@@ -12,6 +12,10 @@ $("#select-product-type").change(function () {
     $("#special-attribute-field").html(productSpecAtbFields[selection]);
 });
 
+$(document).ready(function(){
+    
+});
+
 
 
 //Old dropdown function w/ conditional statements
@@ -45,7 +49,7 @@ $("#select-product-type").change(function () {
 
 
 function checkCheckedBoxes(form) {
-    if ($("#" + form + " input[type=checkbox]:checked").length > 0) {
+    if ($("#product-grid input[type=checkbox]:checked").length > 0) {
         $(".delete-button").css("display", "block");
     } else {
         $(".delete-button").css("display", "none");
@@ -53,10 +57,7 @@ function checkCheckedBoxes(form) {
 }
 
 $(".product-checkbox").on("click", function () {
-    let confirmDelete = confirm("Are you sure?");
-    if (confirmDelete) {
-        checkCheckedBoxes("mass-delete")}
-
+    checkCheckedBoxes("mass-delete")
 });
 
 var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"> Size <input type="text" name="special_attribute_value" required> GB<br>\

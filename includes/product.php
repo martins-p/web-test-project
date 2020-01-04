@@ -81,7 +81,7 @@ class Product extends Dbc {
     }
 
     function deleteProduct() {
-        if (count($_POST["selected_sku"]) > 0) {
+        if (count($_POST['selected_sku']) > 0) {
             $deleteSkus = implode(",", $_POST['selected_sku']);
             $pdo = $this->connect();
             $stmt_product= $pdo->prepare("DELETE FROM products WHERE sku IN ('$deleteSkus')");
@@ -89,9 +89,8 @@ class Product extends Dbc {
     
             try {
                 $pdo->beginTransaction();               
-                $stmt_product->execute();
                 $stmt_attribute->execute();
-    
+                $stmt_product->execute();
                 $pdo->commit();
             }
             catch (Exception $error) {

@@ -25,12 +25,11 @@
                 <h3><a href="add_page.php">Add Product</a></h3>
             </div>
             <div class="col">
-                <button type="submit"  form="mass-delete" class="delete-button btn btn-warning">Delete</button>
+                <button type="submit"  name="massDelBtn" form="mass-delete" class="delete-button btn btn-warning">Delete</button>
             </div>
         </div>
-    </div>    
-    
-    
+    </div>
+   
     <form id="mass-delete" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <div id="product-grid">
         <?php 
@@ -53,10 +52,8 @@
         
     
     <?php
-        if($_POST){
- 
+        if(isset($_POST['massDelBtn'])){
     $product = new Product();
-
     $product->deleteProduct();
 }
 ?>
