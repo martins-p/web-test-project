@@ -11,9 +11,11 @@ class Product extends Dbc {
     public $type;
     public $special_attribute = "";
     public $special_attribute_value = null;
+    private $data; //Data submitted with POST
 
-
-    
+    public function __construct($post_data) {
+        $this->data = $post_data;
+    }
 
     protected function getAllProducts() {
 
@@ -27,7 +29,7 @@ class Product extends Dbc {
         }
     }
 
-    protected function getAllProdTypes (){
+    protected function getProdTypes (){
 
         $stmt = $this->connect()->query("SELECT type FROM product_types");
         $output = array();
@@ -42,12 +44,12 @@ class Product extends Dbc {
         $stmt_product= $pdo->prepare("INSERT INTO products (sku, name, price, type) VALUES (:sku,:name,:price,:type)");
         $stmt_attribute= $pdo->prepare("INSERT INTO attributes (sku, attribute, value) VALUES (:sku, :attribute, :value)");
         
-        $this->sku = $this->validate($this->sku);
-        $this->name = $this->validate($this->name);
-        $this->price = $this->validate($this->price);
-        $this->type = $this->validate($this->type);
-        $this->special_attribute = $this->validate($this->special_attribute);
-        $this->special_attribute_value = $this->validate($this->special_attribute_value);
+        $this->sku = $this->sanitizeInput($this->sku);
+        $this->name = $this->sanitizeInput($this->name);
+        $this->price = $this->sanitizeInput($this->price);
+        $this->type = $this->sanitizeInput($this->type);
+        $this->special_attribute = $this->sanitizeInput($this->special_attribute);
+        $this->special_attribute_value = $this->sanitizeInput($this->special_attribute_value);
 
         try {
             $pdo->beginTransaction();
@@ -73,7 +75,7 @@ class Product extends Dbc {
 
     }
 
-    function validate($data) {
+    function sanitizeInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
@@ -82,9 +84,12 @@ class Product extends Dbc {
 
     function deleteProduct() {
         if (count($_POST['selected_sku']) > 0) {
-            $deleteSkus = implode(",", $_POST['selected_sku']);
+                        
+            $deleteSkus = implode("','", $_POST['selected_sku']);
+            print_r($deleteSkus);
             $pdo = $this->connect();
             $stmt_product= $pdo->prepare("DELETE FROM products WHERE sku IN ('$deleteSkus')");
+            
             $stmt_attribute= $pdo->prepare("DELETE FROM attributes WHERE sku IN ('$deleteSkus')");
     
             try {
@@ -101,6 +106,3 @@ class Product extends Dbc {
     }
 
 }
-
-
-

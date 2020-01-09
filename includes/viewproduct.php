@@ -12,7 +12,7 @@ class ViewProduct extends Product {
 
     public function showAllProdTypes() {
         $dataSet = array();
-        $dataSet = $this->getAllProdTypes();
+        $dataSet = $this->getProdTypes();
         return $dataSet;
     }
 

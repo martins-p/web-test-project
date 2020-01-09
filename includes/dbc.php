@@ -7,7 +7,7 @@ class Dbc {
     private $password;
     private $dbname;
 
-    public function connect() {
+    protected function connect() { //Protected method, can be accessed only by classes that extend this class
         $this->servername = "localhost";
         $this->username = "root";
         $this->password = "";

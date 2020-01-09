@@ -12,9 +12,7 @@ $("#select-product-type").change(function () {
     $("#special-attribute-field").html(productSpecAtbFields[selection]);
 });
 
-$(document).ready(function(){
-    
-});
+
 
 
 
@@ -87,3 +85,46 @@ var productSpecAtbFields = {
     book: specialAtbWeight,
     furniture: specialAtbDimensions,
 }
+
+
+//AJAX below
+
+$(document).ready(function(){
+    
+        $('#productCardForm').submit(function(){
+        
+        // Prevent the form from submitting the default way
+        event.preventDefault();
+        /*
+         * 'post_receiver.php' - where you will pass the form data
+         * $(this).serialize() - to easily read form data
+         * function(data){... - data contains the response from post_receiver.php
+         */
+        
+        var formData = $(this).serializeArray();
+        console.log(formData);
+        formData.push({name : 'massDelBtn', value : 'delete'});
+
+        $.ajax({
+            type: 'POST',
+            url: 'includes/delete_product.php', 
+            data: formData
+        })
+        
+        .done(function(){
+                     
+            $('#product-grid').load(' #product-grid > *');
+             
+        })
+        .fail(function() {
+         
+            // just in case posting your form failed
+            alert( "Posting failed." );
+             
+        });
+ 
+        // to prevent refreshing the whole page page
+        return false;
+ 
+    });
+});
