@@ -1,5 +1,5 @@
 
-<?php include_once 'includes/viewproduct.php';
+<?php include_once 'includes/view_product.php';
     include_once 'includes/product.php'?>
 
 <!DOCTYPE html>

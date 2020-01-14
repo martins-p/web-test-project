@@ -11,11 +11,27 @@ class Product extends Dbc {
     public $type;
     public $special_attribute = "";
     public $special_attribute_value = null;
-    private $data; //Data submitted with POST
-
-    public function __construct($post_data) {
-        $this->data = $post_data;
+    //public $data; //Data submitted with POST
+    
+//
+    /*public function __construct() {
+       // $this->data = $post_data;
     }
+
+    public static function withData (array $data) {
+        $instance = new self();
+        $instance->fillData($data);
+        return $instance;
+    }
+
+    protected function fillData(array $data) {
+        $this->sku =$data['sku']; 
+        $this->name = $data['name'];
+        $this->price = $data['price'];
+        $this->type = $data['type'];
+        $this->special_attribute = $data['special_attribute'];
+        $this->special_attribute_value = $data['special_attribute_value'];
+    }*/
 
     protected function getAllProducts() {
 
@@ -29,7 +45,7 @@ class Product extends Dbc {
         }
     }
 
-    protected function getProdTypes (){
+    protected function getAllProdTypes (){
 
         $stmt = $this->connect()->query("SELECT type FROM product_types");
         $output = array();
@@ -40,22 +56,25 @@ class Product extends Dbc {
     }
 
     function addProduct () {
+        
         $pdo = $this->connect();
         $stmt_product= $pdo->prepare("INSERT INTO products (sku, name, price, type) VALUES (:sku,:name,:price,:type)");
         $stmt_attribute= $pdo->prepare("INSERT INTO attributes (sku, attribute, value) VALUES (:sku, :attribute, :value)");
         
-        $this->sku = $this->sanitizeInput($this->sku);
+        $this->sku = $this->sanitizeInput($this->sku); 
         $this->name = $this->sanitizeInput($this->name);
         $this->price = $this->sanitizeInput($this->price);
         $this->type = $this->sanitizeInput($this->type);
         $this->special_attribute = $this->sanitizeInput($this->special_attribute);
         $this->special_attribute_value = $this->sanitizeInput($this->special_attribute_value);
-
+        var_dump($this->sku);
+        
+        
         try {
             $pdo->beginTransaction();
 
             $stmt_product->bindParam('sku', $this->sku);
-            $stmt_product->bindParam('name', $this->name);
+            $stmt_product->bindParam('name', $this->name); //Check -> PDO::PARAM_STR
             $stmt_product->bindParam('price', $this->price);
             $stmt_product->bindParam('type', $this->type);
 
@@ -65,6 +84,9 @@ class Product extends Dbc {
             
             $stmt_product->execute();
             $stmt_attribute->execute();
+
+           /* $stmt_product->execute(array('sku' => $this->sku, 'name' => $this->name, 'price' => $this->price, 'type' => $this->type));
+            $stmt_attribute->execute(array('sku' => $this->sku, 'attribute' => $this->special_attribute, 'value' => $this->special_attribute_value));*/
 
             $pdo->commit();
         }

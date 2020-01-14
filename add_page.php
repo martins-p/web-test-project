@@ -1,4 +1,4 @@
-<?php include ('includes/viewproduct.php');
+<?php include ('includes/view_product.php');
 require_once ('includes/validation.php');
      
 if(isset($_POST['submit'])) {
@@ -7,16 +7,20 @@ if(isset($_POST['submit'])) {
     
     if(empty($errors)){
         echo 'No errors';
-        $product = new Product($_POST);
-        $product->addProduct();
-        /*$product = new Product();
+        //$product = Product::withData($_POST);
+        //$product = new Product();
+        //$product->addProduct();
+
+        $product = new Product();
         $product->sku = $_POST['sku'];
         $product->name = $_POST['name'];
         $product->price = $_POST['price'];
         $product->type = $_POST['type'];
         $product->special_attribute_value = $_POST['special_attribute_value'];
         $product->special_attribute = $_POST['special_attribute'];
-        $product->addProduct();*/
+        var_dump($product->sku);
+        $product->addProduct();
+
     } else {
         echo 'Got errors';
     }
