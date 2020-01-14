@@ -6,12 +6,11 @@ if(isset($_POST['submit'])) {
     $errors = $validation->validateForm();
     
     if(empty($errors)){
-        echo 'No errors';
-        //$product = Product::withData($_POST);
-        //$product = new Product();
-        //$product->addProduct();
+        //echo 'No errors';
+        $product = Product::withData($_POST);
+        $product->addProduct();
 
-        $product = new Product();
+        /*$product = new Product();
         $product->sku = $_POST['sku'];
         $product->name = $_POST['name'];
         $product->price = $_POST['price'];
@@ -19,7 +18,7 @@ if(isset($_POST['submit'])) {
         $product->special_attribute_value = $_POST['special_attribute_value'];
         $product->special_attribute = $_POST['special_attribute'];
         var_dump($product->sku);
-        $product->addProduct();
+        $product->addProduct();*/
 
     } else {
         echo 'Got errors';

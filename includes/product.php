@@ -5,33 +5,33 @@ include 'validation.php';
 
 class Product extends Dbc {
 
-    public $sku;
-    public $name;
-    public $price;
-    public $type;
-    public $special_attribute = "";
-    public $special_attribute_value = null;
-    //public $data; //Data submitted with POST
+    private $sku;
+    private $name;
+    private $price;
+    private $type;
+    private $special_attribute = "";
+    private $special_attribute_value = null;
+    private $data; //Data submitted with POST
     
-//
-    /*public function __construct() {
+
+    public function __construct() {
        // $this->data = $post_data;
     }
 
-    public static function withData (array $data) {
+    public static function withData ($data) {
         $instance = new self();
         $instance->fillData($data);
         return $instance;
     }
 
-    protected function fillData(array $data) {
+    protected function fillData($data) {
         $this->sku =$data['sku']; 
         $this->name = $data['name'];
         $this->price = $data['price'];
         $this->type = $data['type'];
         $this->special_attribute = $data['special_attribute'];
         $this->special_attribute_value = $data['special_attribute_value'];
-    }*/
+    }
 
     protected function getAllProducts() {
 
@@ -73,7 +73,7 @@ class Product extends Dbc {
         try {
             $pdo->beginTransaction();
 
-            $stmt_product->bindParam('sku', $this->sku);
+            /*$stmt_product->bindParam('sku', $this->sku);
             $stmt_product->bindParam('name', $this->name); //Check -> PDO::PARAM_STR
             $stmt_product->bindParam('price', $this->price);
             $stmt_product->bindParam('type', $this->type);
@@ -83,10 +83,10 @@ class Product extends Dbc {
             $stmt_attribute->bindParam('value', $this->special_attribute_value);
             
             $stmt_product->execute();
-            $stmt_attribute->execute();
+            $stmt_attribute->execute();*/
 
-           /* $stmt_product->execute(array('sku' => $this->sku, 'name' => $this->name, 'price' => $this->price, 'type' => $this->type));
-            $stmt_attribute->execute(array('sku' => $this->sku, 'attribute' => $this->special_attribute, 'value' => $this->special_attribute_value));*/
+           $stmt_product->execute(array('sku' => $this->sku, 'name' => $this->name, 'price' => $this->price, 'type' => $this->type));
+            $stmt_attribute->execute(array('sku' => $this->sku, 'attribute' => $this->special_attribute, 'value' => $this->special_attribute_value));
 
             $pdo->commit();
         }
