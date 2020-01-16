@@ -1,7 +1,7 @@
 <?php include ('includes/view_product.php');
 require_once ('includes/validation.php');
      
-if(isset($_POST['submit'])) {
+/*if(isset($_POST['submit'])) {
     $validation = new InputValidator($_POST);
     $errors = $validation->validateForm();
     
@@ -10,7 +10,7 @@ if(isset($_POST['submit'])) {
         $product = Product::withData($_POST);
         $product->addProduct();
 
-        /*$product = new Product();
+        $product = new Product();
         $product->sku = $_POST['sku'];
         $product->name = $_POST['name'];
         $product->price = $_POST['price'];
@@ -18,12 +18,12 @@ if(isset($_POST['submit'])) {
         $product->special_attribute_value = $_POST['special_attribute_value'];
         $product->special_attribute = $_POST['special_attribute'];
         var_dump($product->sku);
-        $product->addProduct();*/
+        $product->addProduct();
 
     } else {
         echo 'Got errors';
     }
-}
+}*/
 
  ?>
 
@@ -44,7 +44,7 @@ if(isset($_POST['submit'])) {
         <h3><a href="index.php">Product List</a></h3>
     </div>
     <div class="content-wrapper">
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" id="new-product-form">
+    <form id="addProdForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <table class="standard-table">
         <tr>
             <td>SKU</td>
@@ -77,7 +77,7 @@ if(isset($_POST['submit'])) {
             <input type="hidden" name="special_attribute" value="">
             <input type="hidden" name="special_attribute_value" value="">
         </div>
-        <button type="submit" name='submit' class="btn btn-success" id="save-button" form="new-product-form">Save</button>
+        <button type="submit" name='addProduct' class="btn btn-success" id="save-button" value="add" form="addProdForm">Save</button>
     </form>
     <div class="error"><?php if (isset($errors)) {
         print_r($errors);} else {echo 'No error';} ?></div>

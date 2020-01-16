@@ -89,8 +89,11 @@ var productSpecAtbFields = {
 
 //AJAX below
 
+
 $(document).ready(function(){
-    
+
+        //Product delete method
+
         $('#productCardForm').submit(function(){
         
         // Prevent the form from submitting the default way
@@ -107,7 +110,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: 'POST',
-            url: 'includes/delete_product.php', 
+            url: 'productscontr.php', 
             data: formData
         })
         
@@ -123,8 +126,40 @@ $(document).ready(function(){
              
         });
  
-        // to prevent refreshing the whole page page
+        // to prevent refreshing the whole page
         return false;
  
+    });
+
+    //Product add method
+    $('#addProdForm').submit(function(){
+        
+        // Prevent the form from submitting the default way
+        event.preventDefault();
+                
+        var formData = $(this).serializeArray();
+        console.log(formData);
+        formData.push({name : 'addProduct', value : 'add'});
+
+        $.ajax({
+            type: 'POST',
+            url: 'productscontr.php', 
+            data: formData
+        })
+        
+        .done(function(){
+               
+            $( '#addprodform' ).each(function(){
+                this.reset();
+            });
+        })
+        .fail(function() {
+         
+            alert( "Adding product failed." );
+             
+        });
+ 
+        // to prevent refreshing the whole page
+        //return false;
     });
 });

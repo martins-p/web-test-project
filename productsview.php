@@ -1,16 +1,15 @@
 <?php
-include 'product.php';
+include 'includes/product.php';
 
-//Shows data on index.php
-class ViewProduct extends Product {
+class ProductsView extends Product {
 
-    public function showAllProducts() {
+    public function showProducts() {
         $dataSet = array();
         $dataSet = $this->getAllProducts();
         return $dataSet;
     }
 
-    public function showAllProdTypes() {
+    public function showProdTypes() {
         $dataSet = array();
         $dataSet = $this->getAllProdTypes();
         return $dataSet;

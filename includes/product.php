@@ -105,10 +105,9 @@ class Product extends Dbc {
     }
 
     function deleteProduct() {
-        if (count($_POST['selected_sku']) > 0) {
+        
                         
             $deleteSkus = implode("','", $_POST['selected_sku']);
-            print_r($deleteSkus);
             $pdo = $this->connect();
             $stmt_product= $pdo->prepare("DELETE FROM products WHERE sku IN ('$deleteSkus')");
             
@@ -124,7 +123,7 @@ class Product extends Dbc {
                 $pdo->rollback();
                 echo "Error: ".$error->getMessage();
             }
-        }
+        
     }
 
 }

@@ -1,6 +1,6 @@
 
-<?php include_once 'includes/view_product.php';
-    include_once 'includes/product.php'?>
+<?php include_once 'productsview.php';
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +34,8 @@
     <form id="productCardForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <div id="product-grid">
         <?php 
-        $viewProducts = new ViewProduct();
-        foreach($viewProducts->showAllProducts() as $row): ?>
+        $viewProducts = new ProductsView();
+        foreach($viewProducts->showProducts() as $row): ?>
             <div class="product-card">
                 <input type="checkbox" class="product-checkbox" autocomplete="off" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
                 <p><?=$row['sku']?></p>
