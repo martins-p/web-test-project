@@ -1,4 +1,4 @@
-<?php include('productsview.php');
+<?php include('includes/productsview.php');
 require_once('includes/validation.php');
 ?>
 
@@ -25,19 +25,19 @@ require_once('includes/validation.php');
             <table class="standard-table">
                 <tr>
                     <td>SKU</td>
-                    <td><input type="text" name="sku" value="<?php echo htmlspecialchars($_POST['sku'] ?? '') ?>"></td>
+                    <td><input type="text" class="input-sku" name="sku" value="<?php echo htmlspecialchars($_POST['sku'] ?? '') ?>"></td>
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td><input type="text" name="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '') ?>"></td>
+                    <td><input type="text" class="input-name" name="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '') ?>"></td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type="text" name="price" value="<?php echo htmlspecialchars($_POST['price'] ?? '') ?>">
+                    <td><input type="text" class="input-price" name="price" value="<?php echo htmlspecialchars($_POST['price'] ?? '') ?>">
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td><select name="type" id="select-product-type" autocomplete="off" value="">
+                    <td><select name="type" id="select-product-type" class="input-type" autocomplete="off" value="">
                             <option selected hidden style='display: none' value=''></option>
                             <?php
                             $productTypes = new ProductsView();
@@ -54,35 +54,6 @@ require_once('includes/validation.php');
             </div>
             <button type="submit" name='addProduct' class="btn btn-success" id="save-button" value="add" form="addProdForm">Save</button>
         </form>
-        <div class="error"><?php if (isset($errors)) {
-                                print_r($errors);
-                            } else {
-                                echo 'No error';
-                            } ?></div>
-    </div>
-    <?php /*if(isset($_POST['submit'])) {
-    $validation = new InputValidator($_POST);
-    $errors = $validation->validateForm();
-    
-    if(empty($errors)){
-        //echo 'No errors';
-        $product = Product::withData($_POST);
-        $product->addProduct();
-
-        $product = new Product();
-        $product->sku = $_POST['sku'];
-        $product->name = $_POST['name'];
-        $product->price = $_POST['price'];
-        $product->type = $_POST['type'];
-        $product->special_attribute_value = $_POST['special_attribute_value'];
-        $product->special_attribute = $_POST['special_attribute'];
-        var_dump($product->sku);
-        $product->addProduct();
-
-    } else {
-        echo 'Got errors';
-    }
-}*/ ?>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="main.js"></script>

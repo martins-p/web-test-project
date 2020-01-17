@@ -3,7 +3,7 @@
 class InputValidator {
 
     private $data; //Data submitted with POST
-    private $errors = []; //Contains errors
+    private $errors = []; //Stores errors
     private static $fields = ['sku', 'name', 'price', 'type', 'special_attribute', 'special_attribute_value']; //Required fields (InputValidator::$fields)
 
     public function __construct($post_data) {
@@ -53,10 +53,10 @@ class InputValidator {
         $val = trim($this->data['price']); //Trim whitespace
 
         if(empty($val)){ //Condition - if input is empty after trimming whitespace
-             $this->addError('price', 'price cannot be empty');
+             $this->addError('price', 'Price cannot be empty');
         } else {
             if(!filter_var($val, FILTER_VALIDATE_FLOAT)){
-                $this->addError('price', 'price must be a valid price');
+                $this->addError('price', 'Price must be a valid number');
             }
         }
 

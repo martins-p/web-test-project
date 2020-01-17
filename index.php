@@ -1,4 +1,4 @@
-<?php include_once 'productsview.php';
+<?php include_once 'includes/productsview.php';
 ?>
 
 <!DOCTYPE html>
@@ -50,13 +50,6 @@
             <?php endforeach; ?>
         </div>
     </form>
-
-    <?php //Logic moved to delete_product.php
-    /*    if(isset($_POST['massDelBtn'])){
-    $product = new Product();
-    $product->deleteProduct();
-    }*/
-    ?>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="main.js"></script>

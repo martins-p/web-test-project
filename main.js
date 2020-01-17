@@ -58,26 +58,28 @@ $(".product-checkbox").on("click", function () {
     checkCheckedBoxes("mass-delete")
 });
 
-var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"> Size <input type="text" name="special_attribute_value" required> GB<br>\
+//Naming problem -> class=input-special_attribute_value
+
+var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"> Size <input type="text" name="special_attribute_value" > GB <span class="input-special_attribute_value"></span><br>\
 <p>Info about size.</p>';
 
-var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"> Weight <input type="text" name="special_attribute_value" required> Kg<br>\
+var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"> Weight <input type="text" name="special_attribute_value" class="input-value" > Kg<br>\
 <p>Info about weight.</p>';
 
 var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions">\
 <table class="standard-table"><tr>\
     <td>Height</td>\
-    <td><input type="number" id="furniture-height" required> cm</td>\
+    <td><input type="number" id="furniture-height" > cm</td>\
 </tr>\
 <tr>\
     <td>Width</td>\
-    <td><input type="number" id="furniture-width" required> cm</td>\
+    <td><input type="number" id="furniture-width" > cm</td>\
 </tr>\
 <tr>\
     <td>Length</td>\
-    <td><input type="number" id="furniture-length" required> cm</td>\
+    <td><input type="number" id="furniture-length" > cm</td>\
 </tr></table>\
-<input type="hidden" id="furniture-size" name="special_attribute_value">\
+<input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">\
 <p>Info about dimensions.</p>';
 
 var productSpecAtbFields = {
@@ -116,8 +118,8 @@ $(document).ready(function () {
                 alert("Posting failed.");
             });
     });
-    
-    var errors = "";
+
+
     //Product add method
     $('#addProdForm').submit(function () {
 
@@ -126,16 +128,18 @@ $(document).ready(function () {
 
         var formData = $(this).serializeArray();
         formData.push({ name: 'addProduct', value: 'add' });
+        var errors = "";
 
         $.ajax({
             type: 'POST',
             url: 'productscontr.php',
             data: formData
         })
-            .done(function (response) {
+            .done(function (e) {
+                //not sure about this solution
+                errOutput(e);
                 //Reset form if submitted succesfully 
-                //console.log(response);  
-                errors = response;
+
                 $('#addProdForm').each(function () {
                     this.reset();
                 });
@@ -145,7 +149,19 @@ $(document).ready(function () {
                 alert("Adding product failed.");
 
             });
-        console.log(errors);      
+
+        function errOutput(errors) { //Output errors if any
+
+            $('.error-message').remove(); //Remove existing messages
+
+            if (errors !== null && errors !== '') {
+                messages = JSON.parse(errors);
+                jQuery.each(messages, function (key, value) {
+                    if (value !== null && value !== '') {
+                        $('.input-' + key).after('<span class="error-message">' + value + '</span>');
+                    }
+                });
+            };
+        };
     });
-    
 });

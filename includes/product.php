@@ -12,12 +12,12 @@ class Product extends Dbc
     private $type;
     private $special_attribute = "";
     private $special_attribute_value = null;
-    private $data; //Data submitted with POST
+    //private $data; //Data submitted with POST
 
 
     public function __construct()
     {
-        // $this->data = $post_data;
+
     }
 
     public static function withData($data)
