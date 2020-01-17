@@ -90,76 +90,62 @@ var productSpecAtbFields = {
 //AJAX below
 
 
-$(document).ready(function(){
+$(document).ready(function () {
 
-        //Product delete method
+    //Product delete method
 
-        $('#productCardForm').submit(function(){
-        
+    $('#productCardForm').submit(function () {
+
         // Prevent the form from submitting the default way
         event.preventDefault();
-        /*
-         * 'post_receiver.php' - where you will pass the form data
-         * $(this).serialize() - to easily read form data
-         * function(data){... - data contains the response from post_receiver.php
-         */
-        
+
         var formData = $(this).serializeArray();
         console.log(formData);
-        formData.push({name : 'massDelBtn', value : 'delete'});
+        formData.push({ name: 'massDelBtn', value: 'delete' });
 
         $.ajax({
             type: 'POST',
-            url: 'productscontr.php', 
+            url: 'productscontr.php',
             data: formData
         })
-        
-        .done(function(){
-                     
-            $('#product-grid').load(' #product-grid > *');
-             
-        })
-        .fail(function() {
-         
-            // just in case posting your form failed
-            alert( "Posting failed." );
-             
-        });
- 
-        // to prevent refreshing the whole page
-        return false;
- 
-    });
-
-    //Product add method
-    $('#addProdForm').submit(function(){
-        
-        // Prevent the form from submitting the default way
-        event.preventDefault();
-                
-        var formData = $(this).serializeArray();
-        console.log(formData);
-        formData.push({name : 'addProduct', value : 'add'});
-
-        $.ajax({
-            type: 'POST',
-            url: 'productscontr.php', 
-            data: formData
-        })
-        
-        .done(function(){
-               
-            $( '#addprodform' ).each(function(){
-                this.reset();
+            .done(function () {
+                $('#product-grid').load(' #product-grid > *');
+            })
+            .fail(function () {
+                // just in case posting your form failed
+                alert("Posting failed.");
             });
-        })
-        .fail(function() {
-         
-            alert( "Adding product failed." );
-             
-        });
- 
-        // to prevent refreshing the whole page
-        //return false;
     });
+    
+    var errors = "";
+    //Product add method
+    $('#addProdForm').submit(function () {
+
+        // Prevent the form from submitting the default way
+        event.preventDefault();
+
+        var formData = $(this).serializeArray();
+        formData.push({ name: 'addProduct', value: 'add' });
+
+        $.ajax({
+            type: 'POST',
+            url: 'productscontr.php',
+            data: formData
+        })
+            .done(function (response) {
+                //Reset form if submitted succesfully 
+                //console.log(response);  
+                errors = response;
+                $('#addProdForm').each(function () {
+                    this.reset();
+                });
+                $(':input', '#select-product-type').removeAttr('selected');
+            })
+            .fail(function () {
+                alert("Adding product failed.");
+
+            });
+        console.log(errors);      
+    });
+    
 });

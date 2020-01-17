@@ -19,7 +19,7 @@
     width: 180px;
     margin: 20px;
     padding: 10px;
-    border: 2pt solid black;
+    border: 1.5pt solid #454545;
     text-align: center;
     overflow: hidden;
 }
@@ -30,6 +30,11 @@
 
 .product-checkbox {
     float: left;
+    opacity: 0.3;
+}
+
+.product-checkbox:checked {
+    opacity: 1;
 }
 
 .delete-button {
