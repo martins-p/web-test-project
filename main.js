@@ -69,15 +69,15 @@ var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Wei
 var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions">\
 <table class="standard-table"><tr>\
     <td>Height</td>\
-    <td><input type="number" id="furniture-height" > cm</td>\
+    <td><input type="text" id="furniture-height" > cm</td>\
 </tr>\
 <tr>\
     <td>Width</td>\
-    <td><input type="number" id="furniture-width" > cm</td>\
+    <td><input type="text" id="furniture-width" > cm</td>\
 </tr>\
 <tr>\
     <td>Length</td>\
-    <td><input type="number" id="furniture-length" > cm</td>\
+    <td><input type="text" id="furniture-length" > cm</td>\
 </tr></table>\
 <input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">\
 <p>Info about dimensions.</p>';
@@ -102,12 +102,11 @@ $(document).ready(function () {
         event.preventDefault();
 
         var formData = $(this).serializeArray();
-        console.log(formData);
         formData.push({ name: 'massDelBtn', value: 'delete' });
 
         $.ajax({
             type: 'POST',
-            url: 'productscontr.php',
+            url: 'includes/productscontr.php',
             data: formData
         })
             .done(function () {
@@ -115,7 +114,7 @@ $(document).ready(function () {
             })
             .fail(function () {
                 // just in case posting your form failed
-                alert("Posting failed.");
+                alert("Deletion was not successful.");
             });
     });
 
@@ -132,22 +131,25 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: 'productscontr.php',
+            url: 'includes/productscontr.php',
             data: formData
         })
-            .done(function (e) {
+            .done(function (errors) {
                 //not sure about this solution
-                errOutput(e);
+                console.log(errors);
+                errOutput(errors);
                 //Reset form if submitted succesfully 
-
-                $('#addProdForm').each(function () {
-                    this.reset();
-                });
-                $(':input', '#select-product-type').removeAttr('selected');
+                if (errors == "") {
+                    $('#addProdForm').each(function () {
+                        this.reset();
+                    });
+                    $(':input', '#select-product-type').removeAttr('selected');
+                }
             })
-            .fail(function () {
-                alert("Adding product failed.");
 
+            .fail(function () {
+                alert("Product could not be added.");
+                errOutput(errors);
             });
 
         function errOutput(errors) { //Output errors if any

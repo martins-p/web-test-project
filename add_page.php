@@ -1,5 +1,4 @@
 <?php include('includes/productsview.php');
-require_once('includes/validation.php');
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +47,7 @@ require_once('includes/validation.php');
                     </td>
                 </tr>
             </table>
+            <div class="error"><?php ?></div>
             <div id="special-attribute-field">
                 <input type="hidden" name="special_attribute" value="">
                 <input type="hidden" name="special_attribute_value" value="">

@@ -15,9 +15,9 @@ class Product extends Dbc
     //private $data; //Data submitted with POST
 
 
-    public function __construct()
+    public function __construct() //Why use constructor?
     {
-
+        
     }
 
     public static function withData($data)
@@ -39,7 +39,9 @@ class Product extends Dbc
 
     protected function getAllProducts()
     {
-        $stmt = $this->connect()->query("SELECT products.id, products.sku, name, price, attribute, value FROM products LEFT JOIN attributes ON products.sku = attributes.sku");
+        $stmt = $this->query("SELECT products.id, products.sku, name, price, attribute, value FROM products LEFT JOIN attributes ON products.sku = attributes.sku");
+
+        // $stmt = $this->connect()->query("SELECT products.id, products.sku, name, price, attribute, value FROM products LEFT JOIN attributes ON products.sku = attributes.sku");
         $output = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $output[] = $row;
@@ -51,12 +53,14 @@ class Product extends Dbc
 
     protected function getAllProdTypes()
     {
-        $stmt = $this->connect()->query("SELECT type FROM product_types");
+        $stmt = $this->query("SELECT type FROM product_types");
         $output = array();
         while ($row = $stmt->fetch()) {
             $output[] = $row;
         }
-        return ($output);
+        if (count($output) > 0) {
+            return $output;
+        }
     }
 
     function addProduct()
@@ -72,7 +76,6 @@ class Product extends Dbc
         $this->type = $this->sanitizeInput($this->type);
         $this->special_attribute = $this->sanitizeInput($this->special_attribute);
         $this->special_attribute_value = $this->sanitizeInput($this->special_attribute_value);
-        var_dump($this->sku);
 
         try {
             $pdo->beginTransaction();
@@ -84,11 +87,11 @@ class Product extends Dbc
 
         } catch (Exception $error) {
             $pdo->rollback();
-            echo "Error: " . $error->getMessage();
+            echo "\nError: " . $error->getMessage();
         }
     }
 
-    function sanitizeInput($data)
+    function sanitizeInput($data) //Is this necessary?
     {
         $data = trim($data);
         $data = stripslashes($data);
@@ -99,8 +102,8 @@ class Product extends Dbc
     function deleteProduct()
     {
         $deleteSkus = implode("','", $_POST['selected_sku']);
-        $pdo = $this->connect();
-        $stmt_product = $pdo->prepare("DELETE FROM products WHERE sku IN ('$deleteSkus')");
+        $pdo = $this->connect(); //This will still execute after DBC exception!!!!
+        $stmt_product = $pdo->prepare("DELETE FROM products WHERE sku IN ('$deleteSkus')"); //Unsafe, check alternativ ewithout direct placement of variable
 
         $stmt_attribute = $pdo->prepare("DELETE FROM attributes WHERE sku IN ('$deleteSkus')");
 
@@ -111,7 +114,8 @@ class Product extends Dbc
             $pdo->commit();
         } catch (Exception $error) {
             $pdo->rollback();
-            echo "Error: " . $error->getMessage();
+            echo "\nError: " . $error->getMessage();
         }
     }
+
 }
