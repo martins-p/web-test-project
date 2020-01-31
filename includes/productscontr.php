@@ -16,24 +16,27 @@ class ProductsContr extends Product
     public function addProd()
     {
         //Validate input
-        echo "Here we go";
         $validation = new InputValidator($_POST);
-        $errors = $validation->validateForm();
-        if (empty($errors)) {
-            //Proceed with addition
-            if (is_array($_POST['special_attribute_value'])) {
-                $_POST['special_attribute_value'] = implode("x", $_POST['special_attribute_value']);
+        try {
+            $errors = $validation->validateForm();
+
+            if (empty($errors)) {
+                //Proceed with addition
+                if (isset($_POST['special_attribute_value']) && is_array($_POST['special_attribute_value'])) {
+                    $_POST['special_attribute_value'] = implode("x", $_POST['special_attribute_value']);
+                }
+                $product = Product::withData($_POST);
+                $product->addProduct();
+                // What if method fails to add?
+            } else {
+                echo json_encode($errors);
+                //return $errors;
             }
-            $product = Product::withData($_POST);
-            $product->addProduct();
-            // What if method fails to add?
-        } else {
-            echo json_encode($errors);
-            //return $errors;
+        } catch (Exception $e) {
+            echo "Addition failed. Reason: " . $e->getMessage();
         }
     }
 }
-var_dump($_POST);
 
 if (isset($_POST['massDelBtn'])) {
     // $result = array(); 

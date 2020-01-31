@@ -63,21 +63,21 @@ $(".product-checkbox").on("click", function () {
 var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"> Size <input type="text" name="special_attribute_value" > GB <span class="input-special_attribute_value"></span><br>\
 <p>Info about size.</p>';
 
-var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"> Weight <input type="text" name="special_attribute_value" class="input-value" > Kg<br>\
+var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"> Weight <input type="text" name="special_attribute_value" class="input-value" > Kg <span class="input-special_attribute_value"></span><br>\
 <p>Info about weight.</p>';
 
 var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions">\
 <table class="standard-table"><tr>\
     <td>Height</td>\
-    <td><input type="text" id="furniture-height" name="special_attribute_value[height]"> cm</td>\
+    <td><input type="text" id="furniture-height" name="special_attribute_value[height]"> cm <span class="input-height"></td>\
 </tr>\
 <tr>\
     <td>Width</td>\
-    <td><input type="text" id="furniture-width" name="special_attribute_value[width]"> cm</td>\
+    <td><input type="text" id="furniture-width" name="special_attribute_value[width]"> cm <span class="input-width"></td>\
 </tr>\
 <tr>\
     <td>Length</td>\
-    <td><input type="text" id="furniture-length" name="special_attribute_value[length]"> cm</td>\
+    <td><input type="text" id="furniture-length" name="special_attribute_value[length]"> cm <span class="input-length"></td>\
 </tr></table>\
 <!-- <input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">-->\
 <p>Info about dimensions.</p>';
@@ -101,30 +101,33 @@ $(document).ready(function () {
         // Prevent the form from submitting the default way
         event.preventDefault();
 
-        var formData = $(this).serializeArray();
-        formData.push({ name: 'massDelBtn', value: 'delete' });
+        if (confirm("Are you sure you want to delete? This action cannnot be undone.")) {
+            var formData = $(this).serializeArray();
+            formData.push({ name: 'massDelBtn', value: 'delete' });
 
-        $.ajax({
-            type: 'POST',
-            url: 'includes/productscontr.php',
-            data: formData
-        })
-            .done(function () {
-                $('#product-grid').load(' #product-grid > *');
+            $.ajax({
+                type: 'POST',
+                url: 'includes/productscontr.php',
+                data: formData
             })
-            .fail(function () {
-                // just in case posting your form failed
-                alert("Deletion was not successful.");
-            });
+                .done(function () {
+                    $('#product-grid').load(' #product-grid > *');
+                })
+                .fail(function () {
+                    // just in case posting your form failed
+                    alert("Deletion was not successful.");
+                });
+        }
     });
 
 
     //Product add method
     $('#addProdForm').submit(function () {
-        
+
         // Prevent the form from submitting the default way
         event.preventDefault();
 
+        $('.error-message').remove();
         var formData = $(this).serializeArray(); //Why use serializearray?
         formData.push({ name: 'addProduct', value: 'add' });
         //formData = JSON.stringify(formData);
@@ -137,38 +140,62 @@ $(document).ready(function () {
             data: formData,
             //contentType: 'application/json'
         })
-            .done(function (errors) {
-                //not sure about this solution
-                console.log("JSON is sent");
-                errOutput(errors);
+            .done(function (response) {
+
                 //Reset form if submitted succesfully 
-               /*  if (errors == "") {
+                if (response == "") {
                     $('#addProdForm').each(function () {
                         this.reset();
                     });
                     $(':input', '#select-product-type').removeAttr('selected');
-                } */
+                    //alert("Product added");
+                    showModal('Product succesfully added.');
+                } else {
+                    errOutput(response);
+                }
             })
 
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Product could not be added.");
-                
+
                 console.log(errorThrown);
                 //errOutput(errors);
             });
 
-        function errOutput(errors) { //Output errors if any
+        function errOutput(response) { //Output errors if any
 
-            $('.error-message').remove(); //Remove existing messages
-
-            /* if (errors !== null && errors !== '') {
-                messages = JSON.parse(errors);
+            // $('.error-message').remove(); //Remove existing messages
+            messages = JSON.parse(response);
+            if (messages['errType'] == 'validationErr') {
+                //console.log(errors);
                 jQuery.each(messages, function (key, value) {
-                    if (value !== null && value !== '') {
+                    if (value !== null && value !== '' && value !== 'errType') {
                         $('.input-' + key).after('<span class="error-message">' + value + '</span>');
                     }
                 });
-            }; */
+            } else if (messages['errType'] == 'duplicateFound') {
+                showModal('Product already exists in database.');
+            }
         };
+
+        function showModal(message) {
+            $('.modal-text').append(message);
+            $('.modal').css('display', 'block');
+            $('.close').click(function () {
+                $('.modal').css('display', 'none');
+                $('.modal-text').empty();
+            });
+            $(window).click(function () {
+                $('.modal').css('display', 'none');
+                $('.modal-text').empty();
+            });
+        };
+
     });
+
+    /* $(window).click(function() {
+        $('.modal').css('display', 'block');
+        $('.modal-text').append('Product succesfully added.');
+    }); */
+
 });

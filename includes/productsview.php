@@ -21,7 +21,6 @@ class ProductsView extends Product
         $dataSet = array();
         try {
             $dataSet = $this->getAllProdTypes();
-            echo "potato";
             return $dataSet;
         } catch (Exception $e) {
             echo "\nFailed to retrieve product types. Reason: " . $e->getMessage();

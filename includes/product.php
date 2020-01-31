@@ -67,6 +67,9 @@ class Product extends Dbc
     {
 
         $pdo = $this->connect();
+        if(!$pdo) {
+            exit();
+        }
         $stmt_product = $pdo->prepare("INSERT INTO products (sku, name, price, type) VALUES (:sku,:name,:price,:type)");
         $stmt_attribute = $pdo->prepare("INSERT INTO attributes (sku, attribute, value) VALUES (:sku, :attribute, :value)");
 
@@ -85,9 +88,10 @@ class Product extends Dbc
 
             $pdo->commit();
 
-        } catch (Exception $error) {
+        } catch (Exception $e) {
             $pdo->rollback();
-            echo "\nError: " . $error->getMessage();
+            $response = ['errorMsg' => 'SKU already exists in database.', 'errType' => 'duplicateFound',];
+            echo json_encode($response);
         }
     }
 
