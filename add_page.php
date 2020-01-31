@@ -49,8 +49,8 @@
             </table>
             <div class="error"><?php ?></div>
             <div id="special-attribute-field">
-                <input type="hidden" name="special_attribute" value="">
-                <input type="hidden" name="special_attribute_value" value="">
+                <!-- <input type="hidden" name="special_attribute" value="">
+                <input type="hidden" name="special_attribute_value" value=""> -->
             </div>
             <button type="submit" name='addProduct' class="btn btn-success" id="save-button" value="add" form="addProdForm">Save</button>
         </form>

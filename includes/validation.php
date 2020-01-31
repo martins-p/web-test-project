@@ -17,7 +17,7 @@ class InputValidator {
                 return;
             }
         }
-
+        var_dump($this->data);
         $this->validateName();
         $this->validatePrice();
         $this->validateSku();
@@ -79,13 +79,67 @@ class InputValidator {
 
     }
 
+    private function checkEmptyInput($key, $value) {
+        if (empty($value)) {
+            $this->addError($key, 'Value cannot be empty');
+        } 
+    }
+
+    private function checkFloat($key, $value) {
+        if(!filter_var($value, FILTER_VALIDATE_FLOAT)){
+            $this->addError($key, 'Value must be a valid number');
+        }
+    }
+
     private function validateAttrbValue() {
+
+        if (is_array($this->data['special_attribute_value'])) {
+
+            foreach($this->data['special_attribute_value'] as $key => $value) {
+                $value = trim($value);
+                self::checkEmptyInput($key, $value);
+                self::checkFloat($key, $value);
+            }
+
+/*             $height = trim($this->data['special_attribute_value']['height']);
+            $width = trim($this->data['special_attribute_value']['width']);
+            $length = trim($this->data['special_attribute_value']['length']);
+
+            self::checkEmptyInput('special_attribute_value', $height);
+            self::checkEmptyInput('special_attribute_value', $width);
+            self::checkEmptyInput('special_attribute_value', $length);
+
+            self::checkFloat('special_attribute_value', $height);
+            self::checkFloat('special_attribute_value', $width);
+            self::checkFloat('special_attribute_value', $length); */
+            
+/*             if (empty($height)) {
+                $this->addError('special_attribute_value', 'Height cannot be empty');
+            }
+            if (empty($width)) {
+                $this->addError('special_attribute_value', 'Width cannot be empty');
+            }
+            if (empty($length)) {
+                $this->addError('special_attribute_value', 'Length cannot be empty'); 
+            }*/
+/*             if(!filter_var($height, FILTER_VALIDATE_FLOAT)){
+                $this->addError('price', 'height must be a valid number');
+            }
+            if(!filter_var($width, FILTER_VALIDATE_FLOAT)){
+                $this->addError('price', 'width must be a valid number');
+            }
+            if(!filter_var($length, FILTER_VALIDATE_FLOAT)){
+                $this->addError('price', 'length must be a valid number');
+            } */
+
+        } else{
+
         $val = trim($this->data['special_attribute_value']); //Trim whitespace
 
         if(empty($val)){ //Condition - if input is empty after trimming whitespace
              $this->addError('special_attribute_value', 'Special attribute value cannot be empty');
         }
-
+    }
     }
     
     //Adds existing errors to error array $errors

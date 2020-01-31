@@ -1,9 +1,9 @@
-$("#save-button").click(function join_size_values() {
+/* $("#save-button").click(function join_size_values() {
     var height = $("#furniture-height").val();
     var width = $("#furniture-width").val();
     var length = $("#furniture-length").val();
     $("#furniture-size").val(height + "x" + width + "x" + length);
-});
+}); */
 
 //Dropdown function
 
@@ -69,17 +69,17 @@ var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Wei
 var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions">\
 <table class="standard-table"><tr>\
     <td>Height</td>\
-    <td><input type="text" id="furniture-height" > cm</td>\
+    <td><input type="text" id="furniture-height" name="special_attribute_value[height]"> cm</td>\
 </tr>\
 <tr>\
     <td>Width</td>\
-    <td><input type="text" id="furniture-width" > cm</td>\
+    <td><input type="text" id="furniture-width" name="special_attribute_value[width]"> cm</td>\
 </tr>\
 <tr>\
     <td>Length</td>\
-    <td><input type="text" id="furniture-length" > cm</td>\
+    <td><input type="text" id="furniture-length" name="special_attribute_value[length]"> cm</td>\
 </tr></table>\
-<input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">\
+<!-- <input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">-->\
 <p>Info about dimensions.</p>';
 
 var productSpecAtbFields = {
@@ -121,49 +121,54 @@ $(document).ready(function () {
 
     //Product add method
     $('#addProdForm').submit(function () {
-
+        
         // Prevent the form from submitting the default way
         event.preventDefault();
 
-        var formData = $(this).serializeArray();
+        var formData = $(this).serializeArray(); //Why use serializearray?
         formData.push({ name: 'addProduct', value: 'add' });
+        //formData = JSON.stringify(formData);
         var errors = "";
 
         $.ajax({
             type: 'POST',
+            //dataType: 'JSON',
             url: 'includes/productscontr.php',
-            data: formData
+            data: formData,
+            //contentType: 'application/json'
         })
             .done(function (errors) {
                 //not sure about this solution
-                console.log(errors);
+                console.log("JSON is sent");
                 errOutput(errors);
                 //Reset form if submitted succesfully 
-                if (errors == "") {
+               /*  if (errors == "") {
                     $('#addProdForm').each(function () {
                         this.reset();
                     });
                     $(':input', '#select-product-type').removeAttr('selected');
-                }
+                } */
             })
 
-            .fail(function () {
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Product could not be added.");
-                errOutput(errors);
+                
+                console.log(errorThrown);
+                //errOutput(errors);
             });
 
         function errOutput(errors) { //Output errors if any
 
             $('.error-message').remove(); //Remove existing messages
 
-            if (errors !== null && errors !== '') {
+            /* if (errors !== null && errors !== '') {
                 messages = JSON.parse(errors);
                 jQuery.each(messages, function (key, value) {
                     if (value !== null && value !== '') {
                         $('.input-' + key).after('<span class="error-message">' + value + '</span>');
                     }
                 });
-            };
+            }; */
         };
     });
 });
