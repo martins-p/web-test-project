@@ -1,61 +1,20 @@
-/* $("#save-button").click(function join_size_values() {
-    var height = $("#furniture-height").val();
-    var width = $("#furniture-width").val();
-    var length = $("#furniture-length").val();
-    $("#furniture-size").val(height + "x" + width + "x" + length);
-}); */
 
-//Dropdown function
 
 $("#select-product-type").change(function () {
     var selection = $("#select-product-type option:selected").text().toLowerCase().trimStart();
     $("#special-attribute-field").html(productSpecAtbFields[selection]);
 });
 
-
-
-
-
-//Old dropdown function w/ conditional statements
-
-/*$("#select-product-type").change(function () {
-    var selection = $("#select-product-type option:selected").text().toLowerCase().trimStart();
-    switch (selection) {
-        case 'dvd-disc':
-            $("#special-attribute-field").html(specialAtbSize);
-            break;
-        case 'book':
-            $("#special-attribute-field").html(specialAtbWeight);
-            break;
-        case 'furniture':
-            $("#special-attribute-field").html(specialAtbDimensions);
-            break;
-        default:
-            $("#special-attribute-field").html('');
-    }
-});
-*/
-
-// $(".product-checkbox").change(function(){
-//     console.log("Checked");
-//     if ($(this).prop("checked")) {
-//         $("#delete-button").show();
-//     } else {
-//         $("#delete-button").hide();
-//     }
-// });
-
-
 function checkCheckedBoxes(form) {
     if ($("#product-grid input[type=checkbox]:checked").length > 0) {
-        $(".delete-button").css("display", "block");
+        $(".delete-button").show();
     } else {
-        $(".delete-button").css("display", "none");
+        $(".delete-button").hide();
     };
 }
 
-$(".product-checkbox").on("click", function () {
-    checkCheckedBoxes("mass-delete")
+$(document).on("click", ".product-checkbox", function () {
+    checkCheckedBoxes("mass-delete");
 });
 
 //Naming problem -> class=input-special_attribute_value
@@ -91,7 +50,6 @@ var productSpecAtbFields = {
 
 //AJAX below
 
-
 $(document).ready(function () {
 
     //Product delete method
@@ -110,12 +68,20 @@ $(document).ready(function () {
                 url: 'includes/productscontr.php',
                 data: formData
             })
-                .done(function () {
-                    $('#product-grid').load(' #product-grid > *');
+                .done(function (response) {
+                    console.log(response);
+                    if (response == "") {
+                        $('#product-grid').load(' #product-grid > *');
+                        $(".delete-button").hide();
+
+                        showModal('Product(s) succesfully deleted.');
+                    } else {
+                        errOutput(response);
+                    }
                 })
                 .fail(function () {
                     // just in case posting your form failed
-                    alert("Deletion was not successful.");
+                    alert("Deletion was not successful."); //This is not enough
                 });
         }
     });
@@ -173,29 +139,21 @@ $(document).ready(function () {
                         $('.input-' + key).after('<span class="error-message">' + value + '</span>');
                     }
                 });
-            } else if (messages['errType'] == 'duplicateFound') {
-                showModal('Product already exists in database.');
+            } else if (messages['errType'] == 'failedToAdd' || messages['errType'] == 'failedToDelete') {
+                showModal(messages['errorMsg']);
             }
         };
-
-        function showModal(message) {
-            $('.modal-text').append(message);
-            $('.modal').css('display', 'block');
-            $('.close').click(function () {
-                $('.modal').css('display', 'none');
-                $('.modal-text').empty();
-            });
-            $(window).click(function () {
-                $('.modal').css('display', 'none');
-                $('.modal-text').empty();
-            });
-        };
-
     });
-
-    /* $(window).click(function() {
+    window.showModal = function(message) {
+        $('.modal-text').append(message);
         $('.modal').css('display', 'block');
-        $('.modal-text').append('Product succesfully added.');
-    }); */
-
+        $('.close').click(function () {
+            $('.modal').css('display', 'none');
+            $('.modal-text').empty();
+        });
+        $(window).click(function () {
+            $('.modal').css('display', 'none');
+            $('.modal-text').empty();
+        });
+    };
 });

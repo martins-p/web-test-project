@@ -1,14 +1,16 @@
 <?php
 
-class Dbc {
-
+class Dbc
+{
     private $servername;
     private $username;
     private $password;
     private $dbname;
     private $pdo;
 
-    protected function query($query) { //Metode lai nav manuali jakonektejas katru reizi
+    //Method to avoid manually connecting on every query 
+    protected function query($query)
+    {
         $this->connect();
         if ($this->pdo) {
             return $this->pdo->query($query);
@@ -17,23 +19,22 @@ class Dbc {
         }
     }
 
-    protected function connect() { 
-
+    //DB connection method
+    protected function connect()
+    {
         $this->servername = "localhost";
         $this->username = "root";
         $this->password = "";
         $this->dbname = "junior_test";
         
-        if (isset($this->pdo)) return;
-
+        //Try to establish new DB connection via PDO
         try {
-            $dsn = "mysql:host=".$this->servername.";dbname=".$this->dbname; //dsn = data source name
+            $dsn = "mysql:host=" . $this->servername . ";dbname=" . $this->dbname; //dsn = data source name
             $this->pdo = new PDO($dsn, $this->username, $this->password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->pdo;
-
         } catch (PDOException $e) {
-            echo "\nDatabase connection problem."; //.$e->getMessage(); //What happens in inherited classes?
+            exit("Database connection problem: " .  $e->getMessage());
         }
     }
 }

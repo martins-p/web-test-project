@@ -43,13 +43,25 @@
                     <h3><?= $row['name'] ?></h3>
                     <p>Price: <?= $row['price'] ?>€</p>
                     <?php
-                        if ($row['value'] !== null) : ?>
+                    if ($row['value'] !== null) : ?>
                         <p class="product-attribute"><?= $row['attribute'] ?>: <?= $row['value'] ?></p>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         </div>
     </form>
+
+    <!-- Message modal -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-outer-container">
+            <div class="modal-inner-container">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p class="modal-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="main.js"></script>

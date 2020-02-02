@@ -7,10 +7,14 @@ class ProductsContr extends Product
     public function deleteProd()
     {
         if (count($_POST['selected_sku']) > 0) {
-            $product = new Product();
-            $product->deleteProduct();
+            try {
+                $product = new Product();
+                $product->deleteProduct();
+            } catch (Exception $e) {
+                $response = ['errorMsg' => $e->getMessage(), 'errType' => 'failedToDelete',];
+                exit(json_encode($response));
+            }
         }
-        //return array("ok": "1", "errormsg: ", "");
     }
 
     public function addProd()
@@ -19,21 +23,17 @@ class ProductsContr extends Product
         $validation = new InputValidator($_POST);
         try {
             $errors = $validation->validateForm();
-
             if (empty($errors)) {
                 //Proceed with addition
-                if (isset($_POST['special_attribute_value']) && is_array($_POST['special_attribute_value'])) {
-                    $_POST['special_attribute_value'] = implode("x", $_POST['special_attribute_value']);
-                }
                 $product = Product::withData($_POST);
                 $product->addProduct();
-                // What if method fails to add?
             } else {
                 echo json_encode($errors);
                 //return $errors;
             }
         } catch (Exception $e) {
-            echo "Addition failed. Reason: " . $e->getMessage();
+            $response = ['errorMsg' => $e->getMessage(), 'errType' => 'failedToAdd',];
+            exit(json_encode($response));
         }
     }
 }

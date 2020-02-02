@@ -55,7 +55,7 @@
             <button type="submit" name='addProduct' class="btn btn-success" id="save-button" value="add" form="addProdForm">Save</button>
         </form>
 
-        <!-- Confirmation modal -->
+        <!-- Message modal -->
         <div id="notificationModal" class="modal">
             <div class="modal-outer-container">
                 <div class="modal-inner-container">
