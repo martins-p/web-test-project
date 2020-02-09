@@ -1,6 +1,6 @@
 <?php
-//require_once 'validation.php';
-include 'product.php';
+require_once 'validation.php';
+require_once 'product.php';
 
 class ProductsContr extends Product
 {
@@ -11,7 +11,7 @@ class ProductsContr extends Product
                 $product = new Product();
                 $product->deleteProduct();
             } catch (Exception $e) {
-                $response = ['errorMsg' => $e->getMessage(), 'errType' => 'failedToDelete',];
+                $response = ['errorMsg' => $e->getMessage(), 'errType' => 'modalError',];
                 exit(json_encode($response));
             }
         }
@@ -21,37 +21,28 @@ class ProductsContr extends Product
     {
         //Validate input
         $validation = new InputValidator($_POST);
-        try {
-            $errors = $validation->validateForm();
-            if (empty($errors)) {
-                //Proceed with addition
+
+        $errors = $validation->validateForm();
+        if (empty($errors)) {
+            //Proceed with addition
+            try {
                 $product = Product::withData($_POST);
                 $product->addProduct();
-            } else {
-                echo json_encode($errors);
-                //return $errors;
+            } catch (Exception $e) {
+                $response = ['errorMsg' => $e->getMessage(), 'errType' => 'modalError',];
+                exit(json_encode($response));
             }
-        } catch (Exception $e) {
-            $response = ['errorMsg' => $e->getMessage(), 'errType' => 'failedToAdd',];
-            exit(json_encode($response));
+        } else {
+            echo json_encode($errors);
+            //return $errors;
         }
     }
 }
 
 if (isset($_POST['massDelBtn'])) {
-    // $result = array(); 
-    try {
-        ProductsContr::deleteProd();
-    } catch (Exception $e) {
-        /* file_put_contents('php://stderr', print_r($e, TRUE));
-        $result = array("ok": "0", "errormsg: " "server error"); */
-        echo "Deletion failed. Reason: " . $e->getMessage();
-    }
-    // echo json_encode($result);
+    ProductsContr::deleteProd();
+
+    
 } else if (isset($_POST['addProduct'])) {
-    try {
-        ProductsContr::addProd();
-    } catch (Exception $e) {
-        echo "Addition failed. Reason: " . $e->getMessage();
-    }
+    ProductsContr::addProd();
 }

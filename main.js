@@ -1,3 +1,5 @@
+$.get("productsview.php").done(console.log("Checked view."));
+
 
 
 $("#select-product-type").change(function () {
@@ -19,27 +21,29 @@ $(document).on("click", ".product-checkbox", function () {
 
 //Naming problem -> class=input-special_attribute_value
 
-var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"> Size <input type="text" name="special_attribute_value" > GB <span class="input-special_attribute_value"></span><br>\
-<p>Info about size.</p>';
+var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"><span>Size</span> <input type="number" step="0.01" name="special_attribute_value" > GB <span class="input-special_attribute_value"></span><br>\
+<p>Please specify size in GB. The value must be a valid number. Use "." as the decimal separator.</p>';
 
-var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"> Weight <input type="text" name="special_attribute_value" class="input-value" > Kg <span class="input-special_attribute_value"></span><br>\
-<p>Info about weight.</p>';
+
+
+var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"><span>Weight</span><input type="number" step="0.01" name="special_attribute_value" class="input-value" > Kg <span class="input-special_attribute_value"></span><br>\
+<p>Please specify weight in Kg. The value must be a valid number. Use "." as the decimal separator.</p>';
 
 var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions">\
-<table class="standard-table"><tr>\
+<table class="dimensions-table"><tr>\
     <td>Height</td>\
-    <td><input type="text" id="furniture-height" name="special_attribute_value[height]"> cm <span class="input-height"></td>\
+    <td><input type="number" step="0.1" id="furniture-height" name="special_attribute_value[height]"> cm <span class="input-height"></td>\
 </tr>\
 <tr>\
     <td>Width</td>\
-    <td><input type="text" id="furniture-width" name="special_attribute_value[width]"> cm <span class="input-width"></td>\
+    <td><input type="number" step="0.1" id="furniture-width" name="special_attribute_value[width]"> cm <span class="input-width"></td>\
 </tr>\
 <tr>\
     <td>Length</td>\
-    <td><input type="text" id="furniture-length" name="special_attribute_value[length]"> cm <span class="input-length"></td>\
+    <td><input type="number" step="0.01" id="furniture-length" name="special_attribute_value[length]"> cm <span class="input-length"></td>\
 </tr></table>\
 <!-- <input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">-->\
-<p>Info about dimensions.</p>';
+<p>Please specify Dimensions in cm. The value must be a valid number. Use "." as the decimal separator.</p>';
 
 var productSpecAtbFields = {
     'dvd-disc': specialAtbSize,
@@ -51,7 +55,7 @@ var productSpecAtbFields = {
 //AJAX below
 
 $(document).ready(function () {
-
+    console.log('Document loaded.');
     //Product delete method
 
     $('#productCardForm').submit(function () {
@@ -74,14 +78,14 @@ $(document).ready(function () {
                         $('#product-grid').load(' #product-grid > *');
                         $(".delete-button").hide();
 
-                        showModal('Product(s) succesfully deleted.');
+                        showModal('Product(s) succesfully deleted');
                     } else {
                         errOutput(response);
                     }
                 })
                 .fail(function () {
                     // just in case posting your form failed
-                    alert("Deletion was not successful."); //This is not enough
+                    showModal('Error: product could not be deleted'); //This is not enough
                 });
         }
     });
@@ -114,46 +118,50 @@ $(document).ready(function () {
                         this.reset();
                     });
                     $(':input', '#select-product-type').removeAttr('selected');
-                    //alert("Product added");
-                    showModal('Product succesfully added.');
+                    $('#special-attribute-field').empty();
+                    showModal('Success! Product has been added');
                 } else {
                     errOutput(response);
                 }
             })
 
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Product could not be added.");
-
-                console.log(errorThrown);
+            .fail(function () {
+                showModal("Error: product could not be added");
                 //errOutput(errors);
             });
-
-        function errOutput(response) { //Output errors if any
-
-            // $('.error-message').remove(); //Remove existing messages
-            messages = JSON.parse(response);
-            if (messages['errType'] == 'validationErr') {
-                //console.log(errors);
-                jQuery.each(messages, function (key, value) {
-                    if (value !== null && value !== '' && value !== 'errType') {
-                        $('.input-' + key).after('<span class="error-message">' + value + '</span>');
-                    }
-                });
-            } else if (messages['errType'] == 'failedToAdd' || messages['errType'] == 'failedToDelete') {
-                showModal(messages['errorMsg']);
-            }
-        };
     });
-    window.showModal = function(message) {
+    window.showModal = function (message) {
         $('.modal-text').append(message);
         $('.modal').css('display', 'block');
         $('.close').click(function () {
             $('.modal').css('display', 'none');
             $('.modal-text').empty();
         });
-        $(window).click(function () {
-            $('.modal').css('display', 'none');
-            $('.modal-text').empty();
+        $(document).click(function (e) {
+            var targetElement = $('.modal');
+            if (targetElement.is(e.target)) {
+                $('.modal').css('display', 'none');
+                $('.modal-text').empty();
+            }
+
         });
     };
+
+    function errOutput(response) { //Output errors if any
+
+        // $('.error-message').remove(); //Remove existing messages
+        messages = JSON.parse(response);
+        if (messages['errType'] == 'validationError') {
+            //console.log(errors);
+            jQuery.each(messages, function (key, value) {
+                if (value !== null && value !== '' && key !== 'errType') {
+                    $('.input-' + key).after('<span class="error-message">' + value + '</span>');
+                }
+            });
+        } else if (messages['errType'] == 'modalError') {
+            showModal(messages['errorMsg']);
+        }
+    };
 });
+
+

@@ -1,5 +1,5 @@
 <?php
-include 'product.php';
+require_once 'product.php';
 
 class ProductsView extends Product
 {
@@ -10,9 +10,11 @@ class ProductsView extends Product
             $dataSet = $this->getAllProducts();
             return $dataSet;
         } catch (Exception $e) {
-            echo "\nFailed to retrieve products. Reason: " . $e->getMessage();
-            //throw new Exception ("Uncaught exception");
-            return $dataSet;
+            
+            $response = ['errorMsg' => "\nFailed to retrieve products. Reason: " . $e->getMessage(), 'errType' => 'modalError',];
+            return $response; 
+            //echo "\nFailed to retrieve products. Reason: " . $e->getMessage();
+            //return $dataSet;
         }
     }
 
@@ -23,9 +25,11 @@ class ProductsView extends Product
             $dataSet = $this->getAllProdTypes();
             return $dataSet;
         } catch (Exception $e) {
-            echo "\nFailed to retrieve product types. Reason: " . $e->getMessage();
-            return $dataSet;
+            $response = ['errorMsg' => "\nFailed to retrieve product types. Reason: " . $e->getMessage(), 'errType' => 'modalError',];
+            return $response;
+            //echo "\nFailed to retrieve product types. Reason: " . $e->getMessage();
+            //return $dataSet;
         }
     }
-
 }
+  

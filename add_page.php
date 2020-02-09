@@ -1,4 +1,4 @@
-<?php include('includes/productsview.php');
+<?php require_once('includes/productsview.php');
 ?>
 
 <!DOCTYPE html>
@@ -16,10 +16,11 @@
 
 <body>
     <div class="header">
-        <h2>Product Add</h2>
+        <h2>Add Product</h2>
         <h3><a href="index.php">Product List</a></h3>
     </div>
     <div class="content-wrapper">
+
         <form id="addProdForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class="standard-table">
                 <tr>
@@ -32,7 +33,7 @@
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type="text" class="input-price" name="price" value="<?php echo htmlspecialchars($_POST['price'] ?? '') ?>">
+                    <td><input type="number" step="0.01" class="input-price" name="price" value="<?php echo htmlspecialchars($_POST['price'] ?? '') ?>">
                 </tr>
                 <tr>
                     <td>Type</td>
@@ -40,20 +41,27 @@
                             <option selected hidden style='display: none' value=''></option>
                             <?php
                             $productTypes = new ProductsView();
-                            foreach ($productTypes->showProdTypes() as $row) : ?>
-                                <option> <?= $row['type'] ?></option>
-                            <?php endforeach; ?>
+                            $dataSet = $productTypes->showProdTypes();
+                            if (!isset($dataSet['errorMsg'])) {
+
+                                foreach ($dataSet as $row) : ?>
+                                    <option> <?= $row['type'] ?></option>
+                            <?php endforeach;
+                            } ?>
                         </select>
                     </td>
                 </tr>
             </table>
-            <!-- <div class="error"><?php ?></div> -->
             <div id="special-attribute-field">
                 <input type="hidden" name="special_attribute" value="">
                 <input type="hidden" name="special_attribute_value" value="">
             </div>
-            <button type="submit" name='addProduct' class="btn btn-success" id="save-button" value="add" form="addProdForm">Save</button>
+            <button type="submit" name='addProduct' class="save-button btn btn-success" id="save-buttn" value="add" form="addProdForm">Save</button>
         </form>
+
+        <div class="error-message">
+            <?php if (isset($dataSet['errorMsg'])) { echo $dataSet['errorMsg'];} ?>
+        </div>
 
         <!-- Message modal -->
         <div id="notificationModal" class="modal">

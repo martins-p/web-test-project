@@ -18,7 +18,7 @@ class InputValidator
         foreach (self::$fields as $field) {
             if (!array_key_exists($field, $this->data)) {
                 throw new Exception("$field is not present in form data");
-                return;
+                //return;
             }
         }
         //Run validator methods
@@ -31,7 +31,7 @@ class InputValidator
 
         //Add error type to error array
         if (!empty($this->validationErrors)) {
-            $this->validationErrors['errType'] = 'validationErr';
+            $this->validationErrors['errType'] = 'validationError';
         }
         return $this->validationErrors;
     }
@@ -39,6 +39,7 @@ class InputValidator
     private function validateName()
     {
         $val = trim($this->data['name']);
+        $val = stripslashes($val);
         self::checkEmptyInput('name', $val, 'Name');
     }
 

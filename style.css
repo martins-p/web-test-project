@@ -4,8 +4,18 @@
     max-height: 100px;
     margin-bottom: 10px;
     padding-bottom: 10px;
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid black;
     overflow: hidden;
+}
+
+.header h3 a {
+    font-size: 1.5rem;
+    color:#9da7b3;
+}
+
+.header h3 a:hover {
+    text-decoration: none;
+    color: #5b9be8;
 }
 
 #product-grid {
@@ -19,7 +29,7 @@
     width: 180px;
     margin: 20px;
     padding: 10px;
-    border: 1.5pt solid #454545;
+    border: 1pt solid #454545;
     text-align: center;
     overflow: hidden;
 }
@@ -35,6 +45,7 @@
 
 .product-checkbox:checked {
     opacity: 1;
+    
 }
 
 .delete-button {
@@ -49,7 +60,26 @@
 
 .standard-table {
     border-collapse: separate;
-    border-spacing: 5px;
+    border-spacing: 5px 20px;
+}
+
+#special-attribute-field p{
+    margin-top: 10px;
+    max-width: 400px;
+}
+
+#special-attribute-field span{
+    margin-right: 10px;
+    max-width: 400px;
+}
+
+.dimensions-table {
+    border-collapse: separate;
+    border-spacing: 5px 10px;
+}
+
+.save-button {
+    margin: 5px;
 }
 
 .error-message {
@@ -61,7 +91,7 @@
 .modal {
     display: none;
     position: fixed;
-    padding-top: 100px;
+    padding-top: 200px;
     z-index: 1;
     left: 0;
     top: 0;
@@ -76,8 +106,7 @@
 .modal-outer-container {
     margin: auto;
     display: table;
-    height: 100px;
-    overflow: hidden;
+    min-height: 100px;
     max-width: 400px;
     min-height: 100px;
 }
@@ -97,14 +126,14 @@
    min-height: 100px; 
    width: 80%;
    display: table-cell; 
+   border: none;
 }
 
 .modal-content p {
     margin: auto;
     display: block;
-    /* text-align: center; */
     padding: 10px;
-    /* vertical-align: middle; */
+    font-size: large;
     
 }
 
@@ -122,3 +151,13 @@
     color: black;
     cursor: pointer;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+  }

@@ -1,4 +1,4 @@
-<?php include_once 'includes/productsview.php';
+<?php require_once 'includes/productsview.php';
 ?>
 
 <!DOCTYPE html>
@@ -36,20 +36,31 @@
         <div id="product-grid">
             <?php
             $viewProducts = new ProductsView();
-            foreach ($viewProducts->showProducts() as $row) : ?>
-                <div class="product-card">
-                    <input type="checkbox" class="product-checkbox" autocomplete="off" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
-                    <p><?= $row['sku'] ?></p>
-                    <h3><?= $row['name'] ?></h3>
-                    <p>Price: <?= $row['price'] ?>€</p>
-                    <?php
-                    if ($row['value'] !== null) : ?>
-                        <p class="product-attribute"><?= $row['attribute'] ?>: <?= $row['value'] ?></p>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
+            $dataSet = $viewProducts->showProducts();
+            if (!isset($dataSet['errorMsg'])) {
+                foreach ($viewProducts->showProducts() as $row) : ?>
+                    <div class="product-card">
+                        <input type="checkbox" class="product-checkbox" autocomplete="off" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
+                        <p><?= $row['sku'] ?></p>
+                        <h3><?= $row['name'] ?></h3>
+                        <p>Price: <?= $row['price'] ?>€</p>
+                        <?php
+                        if ($row['value'] !== null) : ?>
+                            <p class="product-attribute"><?= $row['attribute'] ?>: <?= $row['value'] ?> <?= $row['measure_unit'] ?></p>
+                        <?php endif; ?>
+                    </div>
+            <?php endforeach;
+            } ?>
+            <div class="error-message">
+                <?php if (isset($dataSet['errorMsg'])) {
+                    echo $dataSet['errorMsg'];
+                } ?>
+            </div>
         </div>
+
     </form>
+
+
 
     <!-- Message modal -->
     <div id="notificationModal" class="modal">

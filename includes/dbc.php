@@ -34,7 +34,9 @@ class Dbc
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->pdo;
         } catch (PDOException $e) {
-            exit("Database connection problem: " .  $e->getMessage());
+            throw $e;
+            //exit();
+            //exit("Database connection problem: " .  $e->getMessage());
         }
     }
 }
