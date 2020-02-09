@@ -20,15 +20,12 @@ class Product extends Dbc
 
     private function fillData($data)
     {
-        $this->sku = $this->sanitizeInput($data['sku']);
-        $this->name = $this->sanitizeInput($data['name']);
-        $this->price = $this->sanitizeInput($data['price']);
-        $this->type = $this->sanitizeInput($data['type']);
-        $this->special_attribute = $this->sanitizeInput($data['special_attribute']);
-        if (is_array($data['special_attribute_value'])) {
-            $data['special_attribute_value'] = $this->dimensionsToString($data['special_attribute_value']);
-        }
-        $this->special_attribute_value = $this->sanitizeInput($data['special_attribute_value']);
+        $this->sku = $data['sku'];
+        $this->name = $data['name'];
+        $this->price = $data['price'];
+        $this->type = $data['type'];
+        $this->special_attribute =$data['special_attribute'];
+        $this->special_attribute_value = $data['special_attribute_value'];
     }
 
     protected function getAllProducts()
@@ -69,7 +66,7 @@ class Product extends Dbc
     protected function addProduct()
     {
         $pdo = $this->connect();
-        //$stmt_checkExisting = $pdo->prepare('SELECT * FROM products WHERE sku=:sku');
+        
         $stmt_product = $pdo->prepare('INSERT INTO products (sku, name, price, type) VALUES (:sku,:name,:price,:type)');
         $stmt_attribute = $pdo->prepare('INSERT INTO attributes (sku, attribute, value) VALUES (:sku, :attribute, :value)');
 
@@ -102,7 +99,7 @@ class Product extends Dbc
 
     protected function deleteProduct()
     {
-        $deleteSkus = implode("','", $_POST['selected_sku']);
+        
         $deleteSkus = $_POST['selected_sku'];
         $queryPlaceholders = str_repeat('?,', count($deleteSkus) - 1) . '?';
         $pdo = $this->connect();
@@ -121,7 +118,7 @@ class Product extends Dbc
         } catch (Exception $e) {
             $pdo->rollback();
             throw $e;
-            exit();
+            //exit();
         }
     }
 
@@ -143,20 +140,5 @@ class Product extends Dbc
                 break;
         }
         return $arr;
-    }
-
-    private function sanitizeInput($data)
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-
-    private function dimensionsToString($array)
-    {
-        $trimmed = array_map('trim', $array);
-        $string = implode('x', $trimmed);
-        return $string;
     }
 }

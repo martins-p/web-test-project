@@ -22,18 +22,18 @@ class ProductsContr extends Product
         //Validate input
         $validation = new InputValidator($_POST);
 
-        $errors = $validation->validateForm();
-        if (empty($errors)) {
+        $validatedInput = $validation->validateForm();
+         if (!array_key_exists('errType', $validatedInput)) {
             //Proceed with addition
             try {
-                $product = Product::withData($_POST);
+                $product = Product::withData($validatedInput);
                 $product->addProduct();
             } catch (Exception $e) {
                 $response = ['errorMsg' => $e->getMessage(), 'errType' => 'modalError',];
                 exit(json_encode($response));
             }
         } else {
-            echo json_encode($errors);
+            echo json_encode($validatedInput); 
             //return $errors;
         }
     }

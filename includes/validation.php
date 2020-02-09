@@ -21,74 +21,99 @@ class InputValidator
                 //return;
             }
         }
+
+
+        
         //Run validator methods
-        $this->validateName();
-        $this->validatePrice();
-        $this->validateSku();
-        $this->validateAttrbType();
-        $this->validateAttrbValue();
-        $this->validateType();
+        $this->data['name'] = $this->validateName($this->data['name']);
+        $this->data['price'] = $this->validatePrice($this->data['price']);
+        $this->data['sku'] = $this->validateSku($this->data['sku']);
+        $this->data['type'] = $this->validateProductType($this->data['type']);
+        $this->data['special_attribute'] = $this->validateAttrbType($this->data['special_attribute']);
+        $this->data['special_attribute_value'] = $this->validateAttrbValue($this->data['special_attribute_value']);
 
         //Add error type to error array
-        if (!empty($this->validationErrors)) {
+        if (empty($this->validationErrors)) {
+            return $this->data;
+        } else {
             $this->validationErrors['errType'] = 'validationError';
+            return $this->validationErrors;
         }
-        return $this->validationErrors;
     }
+
+    private function sanitizeString(string $input)
+    {
+        $output = trim($input);
+        $output = stripslashes($output);
+        $output = filter_var($output, FILTER_SANITIZE_STRING);
+        return $output;
+    }
+
     //Validator methods
-    private function validateName()
+    private function validateName($name)
     {
-        $val = trim($this->data['name']);
-        $val = stripslashes($val);
-        self::checkEmptyInput('name', $val, 'Name');
+        $val = $this->sanitizeString($name);
+        $this->checkEmptyInput('name', $val, 'Name');
+        return $val;
     }
 
-    private function validateSKU()
+    private function validateSKU($sku)
     {
-        $val = trim($this->data['sku']);
-        if (self::checkEmptyInput('sku', $val, 'SKU')) {
-            self::checkAlphanum('sku', $val, 'SKU');
+        $val = trim($sku);
+        $this->checkEmptyInput('sku', $val, 'SKU');
+        if (!array_key_exists('sku', $this->validationErrors)) {
+            $this->checkAlphanum('sku', $val, 'SKU');
         }
+        return $val;
     }
 
-    private function validatePrice()
+    private function validatePrice($price)
     {
-        $val = trim($this->data['price']);
-        if (self::checkEmptyInput('price', $val, 'Price')) {
-            self::checkFloat('price', $val, 'Price');
+        $val = trim($price);
+        $this->checkEmptyInput('price', $val, 'Price');
+        if (!array_key_exists('price', $this->validationErrors)) {
+            $this->checkFloat('price', $val, 'Price');
         }
+        return $val;
     }
 
-    private function validateType()
+    private function validateProductType($type)
     {
-        $val = trim($this->data['type']);
-        self::checkEmptyInput('type', $val, 'Type');
+        $val = $this->sanitizeString($type);
+        $this->checkEmptyInput('type', $val, 'Type');
+        return $val;
     }
 
-    private function validateAttrbType()
+    private function validateAttrbType($attribute)
     {
-        $val = trim($this->data['special_attribute']);
-        self::checkEmptyInput('special_attribute', $val, 'Attribute type');
+        $val = $this->sanitizeString($attribute);
+        $this->checkEmptyInput('special_attribute', $val, 'Attribute type');
+        return $val;
     }
 
-    private function validateAttrbValue()
+    private function validateAttrbValue($attributeValue)
     {
 
-        if (is_array($this->data['special_attribute_value'])) {
+        if (is_array($attributeValue)) {
 
-            foreach ($this->data['special_attribute_value'] as $key => $value) {
+            foreach ($attributeValue as $key => $value) {
                 $value = trim($value);
-                if (!self::checkEmptyInput($key, $value)) {
+                if (!$this->checkEmptyInput($key, $value)) {
                     continue;
                 };
-                self::checkFloat($key, $value);
+                $this->checkFloat($key, $value);
+            }
+            if (!array_key_exists('height', $this->validationErrors) &&       !array_key_exists('width', $this->validationErrors) && !array_key_exists('length', $this->validationErrors)) {
+                return $this->dimensionsToString($attributeValue);
             }
         } else {
 
-            $val = trim($this->data['special_attribute_value']);
-            if (self::checkEmptyInput('special_attribute_value', $val, 'Value')) {
-                self::checkFloat('special_attribute_value', $val, 'Value');
+            $val = trim($attributeValue);
+            $this->checkEmptyInput('special_attribute_value', $val, 'Value');
+            if (!array_key_exists('special_attribute_value', $this->validationErrors)) {
+                $this->checkFloat('special_attribute_value', $val, 'Value');
             }
+            return $val;
         }
     }
 
@@ -122,5 +147,12 @@ class InputValidator
         if (!ctype_alnum($value)) {
             $this->addError($key, $fieldName . ' must be alphanumeric');
         }
+    }
+
+    private function dimensionsToString($array)
+    {
+        $trimmed = array_map('trim', $array);
+        $string = implode('x', $trimmed);
+        return $string;
     }
 }

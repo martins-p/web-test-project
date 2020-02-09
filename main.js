@@ -21,26 +21,26 @@ $(document).on("click", ".product-checkbox", function () {
 
 //Naming problem -> class=input-special_attribute_value
 
-var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"><span>Size</span> <input type="number" step="0.01" name="special_attribute_value" > GB <span class="input-special_attribute_value"></span><br>\
+var specialAtbSize = '<input type="hidden" name="special_attribute" value="Size"><span>Size</span> <input type="text" step="0.01" name="special_attribute_value" > GB <span class="input-special_attribute_value"></span><br>\
 <p>Please specify size in GB. The value must be a valid number. Use "." as the decimal separator.</p>';
 
 
 
-var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"><span>Weight</span><input type="number" step="0.01" name="special_attribute_value" class="input-value" > Kg <span class="input-special_attribute_value"></span><br>\
+var specialAtbWeight = '<input type="hidden" name="special_attribute" value="Weight"><span>Weight</span><input type="text" step="0.01" name="special_attribute_value" class="input-value" > Kg <span class="input-special_attribute_value"></span><br>\
 <p>Please specify weight in Kg. The value must be a valid number. Use "." as the decimal separator.</p>';
 
 var specialAtbDimensions = '<input type="hidden" name="special_attribute" value="Dimensions">\
 <table class="dimensions-table"><tr>\
     <td>Height</td>\
-    <td><input type="number" step="0.1" id="furniture-height" name="special_attribute_value[height]"> cm <span class="input-height"></td>\
+    <td><input type="text" step="0.1" id="furniture-height" name="special_attribute_value[height]"> cm <span class="input-height"></td>\
 </tr>\
 <tr>\
     <td>Width</td>\
-    <td><input type="number" step="0.1" id="furniture-width" name="special_attribute_value[width]"> cm <span class="input-width"></td>\
+    <td><input type="text" step="0.1" id="furniture-width" name="special_attribute_value[width]"> cm <span class="input-width"></td>\
 </tr>\
 <tr>\
     <td>Length</td>\
-    <td><input type="number" step="0.01" id="furniture-length" name="special_attribute_value[length]"> cm <span class="input-length"></td>\
+    <td><input type="text" step="0.01" id="furniture-length" name="special_attribute_value[length]"> cm <span class="input-length"></td>\
 </tr></table>\
 <!-- <input type="hidden" id="furniture-size" class="input-value" name="special_attribute_value">-->\
 <p>Please specify Dimensions in cm. The value must be a valid number. Use "." as the decimal separator.</p>';
