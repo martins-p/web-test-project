@@ -2,14 +2,13 @@
 
 class InputValidator
 {
-
-    private $data;
+    private $data; //Variable for storing POST data
     private $validationErrors = [];
     private static $fields = ['sku', 'name', 'price', 'type', 'special_attribute', 'special_attribute_value'];
 
-    public function __construct($post_data)
+    public function __construct($postData)
     {
-        $this->data = $post_data;
+        $this->data = $postData;
     }
 
     public function validateForm()
@@ -18,12 +17,9 @@ class InputValidator
         foreach (self::$fields as $field) {
             if (!array_key_exists($field, $this->data)) {
                 throw new Exception("$field is not present in form data");
-                //return;
             }
         }
 
-
-        
         //Run validator methods
         $this->data['name'] = $this->validateName($this->data['name']);
         $this->data['price'] = $this->validatePrice($this->data['price']);
@@ -57,7 +53,7 @@ class InputValidator
         return $val;
     }
 
-    private function validateSKU($sku)
+    public function validateSKU($sku)
     {
         $val = trim($sku);
         $this->checkEmptyInput('sku', $val, 'SKU');
@@ -103,7 +99,7 @@ class InputValidator
                 };
                 $this->checkFloat($key, $value);
             }
-            if (!array_key_exists('height', $this->validationErrors) &&       !array_key_exists('width', $this->validationErrors) && !array_key_exists('length', $this->validationErrors)) {
+            if (!array_key_exists('height', $this->validationErrors) && !array_key_exists('width', $this->validationErrors) && !array_key_exists('length', $this->validationErrors)) {
                 return $this->dimensionsToString($attributeValue);
             }
         } else {
@@ -117,13 +113,13 @@ class InputValidator
         }
     }
 
-    //Error array population method
+
     private function addError($key, $val)
     {
         $this->validationErrors[$key] = $val;
     }
 
-    //Input checker functions
+
     private function checkEmptyInput($key, $value, $fieldName = 'Value')
     {
         if (empty($value)) {
@@ -149,7 +145,7 @@ class InputValidator
         }
     }
 
-    private function dimensionsToString($array)
+    private function dimensionsToString($array) //Converts Height, Width and Length input values to 'HxWxL' string
     {
         $trimmed = array_map('trim', $array);
         $string = implode('x', $trimmed);

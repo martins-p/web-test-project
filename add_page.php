@@ -21,23 +21,23 @@
     </div>
     <div class="content-wrapper">
 
-        <form id="addProdForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <form id="addProductForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class="standard-table">
                 <tr>
                     <td>SKU</td>
-                    <td><input type="text" class="input-sku" name="sku" value="<?php echo htmlspecialchars($_POST['sku'] ?? '') ?>"></td>
+                    <td><input type="text" class="input_sku" name="sku" value="<?php echo htmlspecialchars($_POST['sku'] ?? '') ?>"></td>
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td><input type="text" class="input-name" name="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '') ?>"></td>
+                    <td><input type="text" class="input_name" name="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '') ?>"></td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type="number" step="0.01" class="input-price" name="price" value="<?php echo htmlspecialchars($_POST['price'] ?? '') ?>">
+                    <td><input type="number" step="0.01" class="input_price" name="price" value="<?php echo htmlspecialchars($_POST['price'] ?? '') ?>">
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td><select name="type" id="select-product-type" class="input-type" autocomplete="off" value="">
+                    <td><select name="type" id="select-product-type" class="input_type" autocomplete="off" value="">
                             <option selected hidden style='display: none' value=''></option>
                             <?php
                             $productTypes = new ProductsView();
@@ -52,15 +52,19 @@
                     </td>
                 </tr>
             </table>
+
             <div id="special-attribute-field">
                 <input type="hidden" name="special_attribute" value="">
                 <input type="hidden" name="special_attribute_value" value="">
             </div>
-            <button type="submit" name='addProduct' class="save-button btn btn-success" id="save-buttn" value="add" form="addProdForm">Save</button>
+            <button type="submit" name='addProduct' class="save-button btn btn-success" id="save-buttn" value="add" form="addProductForm">Save</button>
         </form>
 
+        <!-- Error message container -->
         <div class="error-message">
-            <?php if (isset($dataSet['errorMsg'])) { echo $dataSet['errorMsg'];} ?>
+            <?php if (array_key_exists('errorMsg', $dataSet)) {
+                echo $dataSet['errorMsg'];
+            } ?>
         </div>
 
         <!-- Message modal -->

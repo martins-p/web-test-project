@@ -8,7 +8,7 @@ class Dbc
     private $dbname;
     private $pdo;
 
-    //Method to avoid manually connecting on every query 
+    //Method to avoid manually connecting for every query 
     protected function query($query)
     {
         $this->connect();
@@ -29,14 +29,12 @@ class Dbc
         
         //Try to establish new DB connection via PDO
         try {
-            $dsn = "mysql:host=" . $this->servername . ";dbname=" . $this->dbname; //dsn = data source name
+            $dsn = "mysql:host=" . $this->servername . ";dbname=" . $this->dbname; 
             $this->pdo = new PDO($dsn, $this->username, $this->password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->pdo;
         } catch (PDOException $e) {
             throw $e;
-            //exit();
-            //exit("Database connection problem: " .  $e->getMessage());
         }
     }
 }

@@ -4,16 +4,28 @@ require_once 'product.php';
 
 class ProductsContr extends Product
 {
+    private $formData;
+
+    public function __construct($data)
+    {
+        $this->formData = $data;
+    }
+
     public function deleteProd()
     {
-        if (count($_POST['selected_sku']) > 0) {
-            try {
+        try {
+            if (count($this->formData['selected_sku']) > 0) {
+                foreach ($this->formData['selected_sku'] as $sku) {
+                    if(!ctype_alnum($sku)) {
+                        throw new Exception ("Invalid SKU detected: " . $sku);
+                    }
+                }
                 $product = new Product();
                 $product->deleteProduct();
-            } catch (Exception $e) {
-                $response = ['errorMsg' => $e->getMessage(), 'errType' => 'modalError',];
-                exit(json_encode($response));
             }
+        } catch (Exception $e) {
+            $response = ['errorMsg' => $e->getMessage(), 'errType' => 'modalError',];
+            exit(json_encode($response));
         }
     }
 
@@ -23,7 +35,7 @@ class ProductsContr extends Product
         $validation = new InputValidator($_POST);
 
         $validatedInput = $validation->validateForm();
-         if (!array_key_exists('errType', $validatedInput)) {
+        if (!array_key_exists('errType', $validatedInput)) {
             //Proceed with addition
             try {
                 $product = Product::withData($validatedInput);
@@ -33,16 +45,17 @@ class ProductsContr extends Product
                 exit(json_encode($response));
             }
         } else {
-            echo json_encode($validatedInput); 
-            //return $errors;
+            echo json_encode($validatedInput);
         }
     }
 }
 
-if (isset($_POST['massDelBtn'])) {
-    ProductsContr::deleteProd();
-
-    
-} else if (isset($_POST['addProduct'])) {
-    ProductsContr::addProd();
+if (isset($_POST)) {
+    if ($_POST['btnAction'] == 'delete') {
+        $controller = new ProductsContr($_POST);
+        $controller->deleteProd();
+    } else if ($_POST['btnAction'] == 'add') {
+        $controller = new ProductsContr($_POST);
+        $controller->addProd();
+    }
 }

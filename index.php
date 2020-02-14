@@ -26,43 +26,48 @@
                 <h3><a href="add_page.php">Add Product</a></h3>
             </div>
             <div class="col">
-                <button type="submit" name="massDelBtn" value="delete" id="massDelBtn" form="productCardForm" class="delete-button btn btn-warning">Delete</button>
+                <button type="submit" name="deleteBtn" value="delete" form="productCardForm" class="delete-button btn btn-warning">Delete</button>
             </div>
         </div>
     </div>
 
     <!-- Form w/ product cards -->
-    <form id="productCardForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <form id="productCardForm" method="post">
         <div id="product-grid">
             <?php
             $viewProducts = new ProductsView();
             $dataSet = $viewProducts->showProducts();
-            if (!isset($dataSet['errorMsg'])) {
+
+            //Section that generates product cards
+            if (isset($dataSet) && !array_key_exists('errorMsg', $dataSet)) {
                 foreach ($viewProducts->showProducts() as $row) : ?>
                     <div class="product-card">
                         <input type="checkbox" class="product-checkbox" autocomplete="off" name="selected_sku[]" value="<?php echo $row['sku']; ?>">
                         <p><?= $row['sku'] ?></p>
                         <h3><?= $row['name'] ?></h3>
                         <p>Price: <?= $row['price'] ?>€</p>
+
                         <?php
                         if ($row['value'] !== null) : ?>
-                            <p class="product-attribute"><?= $row['attribute'] ?>: <?= $row['value'] ?> <?= $row['measure_unit'] ?></p>
+                            <p class="product-attribute"><?= $row['attribute'] ?>: <?= $row['value'] ?>&nbsp<?= $row['measure_unit'] ?></p>
                         <?php endif; ?>
                     </div>
             <?php endforeach;
+            } else if (!isset($dataSet)) {
+                echo "No products to display";
             } ?>
+
+            <!-- Error message container -->
             <div class="error-message">
-                <?php if (isset($dataSet['errorMsg'])) {
+                <?php if (isset($dataSet) && array_key_exists('errorMsg', $dataSet)) {
                     echo $dataSet['errorMsg'];
-                } ?>
+                }
+                ?>
             </div>
         </div>
-
     </form>
 
-
-
-    <!-- Message modal -->
+    <!-- Notification modal -->
     <div id="notificationModal" class="modal">
         <div class="modal-outer-container">
             <div class="modal-inner-container">

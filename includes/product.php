@@ -118,7 +118,6 @@ class Product extends Dbc
         } catch (Exception $e) {
             $pdo->rollback();
             throw $e;
-            //exit();
         }
     }
 
