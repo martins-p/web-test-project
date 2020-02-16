@@ -1,4 +1,4 @@
-<?php require_once 'includes/productsview.php';
+<?php require_once 'includes/productview.php';
 ?>
 
 <!DOCTYPE html>
@@ -35,10 +35,9 @@
     <form id="productCardForm" method="post">
         <div id="product-grid">
             <?php
-            $viewProducts = new ProductsView();
+            $viewProducts = new ProductView();
             $dataSet = $viewProducts->showProducts();
 
-            //Section that generates product cards
             if (isset($dataSet) && !array_key_exists('errorMsg', $dataSet)) {
                 foreach ($viewProducts->showProducts() as $row) : ?>
                     <div class="product-card">
@@ -52,10 +51,7 @@
                             <p class="product-attribute"><?= $row['attribute'] ?>: <?= $row['value'] ?>&nbsp<?= $row['measure_unit'] ?></p>
                         <?php endif; ?>
                     </div>
-            <?php endforeach;
-            } else if (!isset($dataSet)) {
-                echo "No products to display";
-            } ?>
+            <?php endforeach;} ?>
 
             <!-- Error message container -->
             <div class="error-message">

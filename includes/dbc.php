@@ -8,18 +8,16 @@ class Dbc
     private $dbname;
     private $pdo;
 
-    //Method to avoid manually connecting for every query 
     protected function query($query)
     {
         $this->connect();
         if ($this->pdo) {
             return $this->pdo->query($query);
         } else {
-            throw new Exception("Query failed.");
+            throw new Exception("Database query failed");
         }
     }
 
-    //DB connection method
     protected function connect()
     {
         $this->servername = "localhost";
@@ -27,7 +25,6 @@ class Dbc
         $this->password = "";
         $this->dbname = "junior_test";
         
-        //Try to establish new DB connection via PDO
         try {
             $dsn = "mysql:host=" . $this->servername . ";dbname=" . $this->dbname; 
             $this->pdo = new PDO($dsn, $this->username, $this->password);

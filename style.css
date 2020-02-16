@@ -82,7 +82,8 @@
     margin: 5px;
 }
 
-.error-message {
+.error-message,
+.input-error-message {
     color: red;
     margin-left: 10px;
     font-size: 80%;

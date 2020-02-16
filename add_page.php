@@ -1,4 +1,4 @@
-<?php require_once('includes/productsview.php');
+<?php require_once('includes/productview.php');
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +20,6 @@
         <h3><a href="index.php">Product List</a></h3>
     </div>
     <div class="content-wrapper">
-
         <form id="addProductForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class="standard-table">
                 <tr>
@@ -40,7 +39,7 @@
                     <td><select name="type" id="select-product-type" class="input_type" autocomplete="off" value="">
                             <option selected hidden style='display: none' value=''></option>
                             <?php
-                            $productTypes = new ProductsView();
+                            $productTypes = new ProductView();
                             $dataSet = $productTypes->showProdTypes();
                             if (!isset($dataSet['errorMsg'])) {
 
