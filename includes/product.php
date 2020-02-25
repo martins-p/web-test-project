@@ -8,8 +8,8 @@ class Product extends Dbc
     private $name;
     private $price;
     private $type;
-    private $special_attribute;
-    private $special_attribute_value;
+    private $specialAttribute;
+    private $specialAttributeValue;
 
     public static function withProductData($data)
     {
